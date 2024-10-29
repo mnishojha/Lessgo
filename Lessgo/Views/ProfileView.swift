@@ -29,7 +29,7 @@ struct ProfileView: View {
                         Image(photo)
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 200, height: 200)
+                            .frame(width: 150, height: 150)
                             .cornerRadius(10)
                             .clipped()
                     }
