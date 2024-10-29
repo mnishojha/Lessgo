@@ -9,6 +9,7 @@ struct ContentView: View {
     @State private var isSignUpButtonPressed = false
     @State private var showPassword = false
     
+    //This is a test push for the view
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
