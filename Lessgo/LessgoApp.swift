@@ -11,7 +11,7 @@ import SwiftUI
 struct LessgoApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            TravelHomeView()
         }
     }
 }
