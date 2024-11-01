@@ -3,7 +3,7 @@ import SwiftUI
 struct ProfileView: View {
     @State private var userName = "John"
     @State private var photos: [String] = [
-        "Girl", "oldman", "fight", "trip", "photo5" // Ensure these match your asset names
+        "Girl", "oldman", "fight", "trip" // Ensure these match your asset names
     ]
     
     var body: some View {
