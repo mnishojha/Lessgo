@@ -64,25 +64,17 @@ struct TripPlanningView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 24) {
-                // Progress bar
-                HStack(spacing: 4) {
-                    ForEach(0..<10, id: \.self) { index in
-                        Rectangle()
-                            .frame(height: 4)
-                            .foregroundColor(index < 8 ? .blue : .gray.opacity(0.3))
-                    }
-                }
-                .padding(.top, 8)
-                
                 // Title
                 Text("Do you have an upcoming trip?")
                     .font(.system(size: 32, weight: .bold))
+                    .foregroundColor(.white)
                     .padding(.top, 16)
                 
                 // Destination section
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Destination")
                         .font(.headline)
+                        .foregroundColor(.white)
                     
                     Menu {
                         ForEach(Array(destinations.keys.sorted()), id: \.self) { region in
@@ -97,7 +89,7 @@ struct TripPlanningView: View {
                     } label: {
                         HStack {
                             Text(destination.isEmpty ? "Select destination" : destination)
-                                .foregroundColor(destination.isEmpty ? .gray : .primary)
+                                .foregroundColor(destination.isEmpty ? .gray : .white)
                             Spacer()
                             Image(systemName: "chevron.down")
                                 .foregroundColor(.gray)
@@ -105,8 +97,8 @@ struct TripPlanningView: View {
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 15)
-                                .fill(colorScheme == .dark ? Color(white: 0.2) : .white)
-                                .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                                .fill(Color(white: 0.15))
+                                .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                         )
                     }
                 }
@@ -115,6 +107,7 @@ struct TripPlanningView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Date")
                         .font(.headline)
+                        .foregroundColor(.white)
                     
                     // Arrival Date
                     DatePicker(
@@ -125,8 +118,8 @@ struct TripPlanningView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(colorScheme == .dark ? Color(white: 0.2) : .white)
-                            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                            .fill(Color(white: 0.15))
+                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                     )
                     
                     // Departure Date
@@ -138,8 +131,8 @@ struct TripPlanningView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(colorScheme == .dark ? Color(white: 0.2) : .white)
-                            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+                            .fill(Color(white: 0.15))
+                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
                     )
                 }
                 
@@ -164,14 +157,12 @@ struct TripPlanningView: View {
                 }
             }
             .padding()
-            .background(
-                colorScheme == .dark ? Color.black : Color(red: 0.95, green: 0.95, blue: 1.0)
-            )
+            .background(Color.black.edgesIgnoringSafeArea(.all))
             .navigationBarItems(leading: Button(action: {
                 // Add your back action here
             }) {
                 Image(systemName: "arrow.left")
-                    .foregroundColor(.primary)
+                    .foregroundColor(.white)
             })
         }
     }
@@ -181,9 +172,6 @@ struct TripPlanningView: View {
 struct TripPlanningView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            TripPlanningView()
-                .preferredColorScheme(.light)
-            
             TripPlanningView()
                 .preferredColorScheme(.dark)
         }
