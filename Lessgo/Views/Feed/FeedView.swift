@@ -43,12 +43,12 @@ struct FeedView: View {
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 15) {
                                     DestinationCard(
-                                        imageName: "Maimi_placeholder",
-                                        cityName: "Maimi"
+                                        imageName: "miami",
+                                        cityName: "Miami"
                                     )
                                     
                                     DestinationCard(
-                                        imageName: "Florida_placeholder",
+                                        imageName: "florida",
                                         cityName: "Florida"
                                     )
                                 }

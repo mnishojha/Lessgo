@@ -5,7 +5,7 @@ struct TravelHomeView: View {
     
     // Sample data for trending plans
     let trendingPlans = [
-        ("Boys trip", "Maimi", "USA", 50),
+        ("Boys trip", "Miami", "USA", 50),
         ("Florida trippp!!!", "Arizona", "Greece", 50)
     ]
     
@@ -127,8 +127,8 @@ struct TravelHomeView: View {
                             }
                             
                             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                                CountryCard(image: "country1")
-                                CountryCard(image: "country2")
+                                CountryCard(image: "miami")
+                                CountryCard(image: "florida")
                             }
                         }
                         .padding(.horizontal)
@@ -136,10 +136,12 @@ struct TravelHomeView: View {
                     .padding(.bottom, 80)
                 }
                 
-                // Bottom Navigation
+                // Bottom Navigation with Safe Area Inset
                 VStack {
                     Spacer()
                     BottomNavigationBar()
+                        .background(Color.gray.opacity(0.1))
+                        .safeAreaInset(edge: .bottom) { Color.clear.frame(height: 0) }
                 }
             }
             .foregroundColor(.white)
@@ -213,7 +215,6 @@ struct CountryCard: View {
             .clipped()
             .cornerRadius(16)
     }
-   
 }
 
 struct BottomNavigationBar: View {
