@@ -5,7 +5,7 @@ struct MatchingView: View {
     @State private var currentIndex = 0
     @State private var potentialMatches: [Match] = [
         Match(name: "MAX", age: 28, bio: "Adventure seeker and coffee lover", photo: "fight"),
-        Match(name: "MANISH", age: 30, bio: "Fitness enthusiast and dog person", photo: "girl"),
+        Match(name: "MANISH", age: 30, bio: "Fitness enthusiast and dog person", photo: "Girl"),
         Match(name: "Engulfedleader2", age: 26, bio: "Bookworm and aspiring chef", photo: "oldman"),
         Match(name: "feegoskye", age: 29, bio: "Tech geek and movie buff", photo: "trip"),
         Match(name: "Unknown", age: 27, bio: "Artist and nature lover", photo: "Profile")
