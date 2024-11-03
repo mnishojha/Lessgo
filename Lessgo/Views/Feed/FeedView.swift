@@ -99,19 +99,19 @@ struct FeedView: View {
                 }
                 
                 // Bottom Navigation
-                VStack {
-                    Spacer()
-                    HStack {
-                        TabBarButton(imageName: "house.fill")
-                        TabBarButton(imageName: "globe", isSelected: true)
-                        AddButton()
-                        TabBarButton(imageName: "mappin")
-                        TabBarButton(imageName: "message")
-                    }
-                    .padding()
-                    .background(Color(.systemBackground))
-                    .shadow(radius: 2)
-                }
+//                VStack {
+//                    Spacer()
+//                    HStack {
+//                        TabBarButton(imageName: "house.fill")
+//                        TabBarButton(imageName: "globe", isSelected: true)
+//                        AddButton()
+//                        TabBarButton(imageName: "mappin")
+//                        TabBarButton(imageName: "message")
+//                    }
+//                    .padding()
+//                    .background(Color(.systemBackground))
+//                    .shadow(radius: 2)
+//                }
             }
             .navigationTitle("Feed")
             .navigationBarItems(trailing: Button(action: {}) {
@@ -153,33 +153,33 @@ struct DestinationCard: View {
     }
 }
 
-struct TabBarButton: View {
-    let imageName: String
-    var isSelected: Bool = false
-    
-    var body: some View {
-        Button(action: {}) {
-            Image(systemName: imageName)
-                .font(.system(size: 20))
-                .foregroundColor(isSelected ? .blue : .gray)
-                .frame(maxWidth: .infinity)
-        }
-    }
-}
+//struct TabBarButton: View {
+//    let imageName: String
+//    var isSelected: Bool = false
+//    
+//    var body: some View {
+//        Button(action: {}) {
+//            Image(systemName: imageName)
+//                .font(.system(size: 20))
+//                .foregroundColor(isSelected ? .blue : .gray)
+//                .frame(maxWidth: .infinity)
+//        }
+//    }
+//}
 
-struct AddButton: View {
-    var body: some View {
-        Button(action: {}) {
-            Image(systemName: "plus")
-                .font(.system(size: 20))
-                .foregroundColor(.white)
-                .frame(width: 50, height: 50)
-                .background(Color.blue)
-                .clipShape(Circle())
-                .shadow(radius: 4)
-        }
-    }
-}
+//struct AddButton: View {
+//    var body: some View {
+//        Button(action: {}) {
+//            Image(systemName: "plus")
+//                .font(.system(size: 20))
+//                .foregroundColor(.white)
+//                .frame(width: 50, height: 50)
+//                .background(Color.blue)
+//                .clipShape(Circle())
+//                .shadow(radius: 4)
+//        }
+//    }
+//}
 
 struct FeedView_Previews: PreviewProvider {
     static var previews: some View {

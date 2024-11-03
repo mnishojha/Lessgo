@@ -10,10 +10,10 @@ import Firebase
 
 @main
 struct LessgoApp: App {
-    //Initalize Firebase
-//    init(){
-//        FirebaseApp.configure()
-//    }
+//    Initalize Firebase
+    init(){
+        FirebaseApp.configure()
+    }
     var body: some Scene {
         WindowGroup {
             TravelHomeView()

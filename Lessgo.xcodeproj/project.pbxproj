@@ -11,6 +11,7 @@
 		1373EE412CD523D000E115E6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE402CD523D000E115E6 /* FirebaseAuth */; };
 		1373EE432CD523D000E115E6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE422CD523D000E115E6 /* FirebaseCrashlytics */; };
 		1373EE452CD523D000E115E6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE442CD523D000E115E6 /* FirebaseFirestore */; };
+		ACCB7F392CD7053900794985 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = ACCB7F382CD7053900794985 /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 				1373EE432CD523D000E115E6 /* FirebaseCrashlytics in Frameworks */,
 				1373EE452CD523D000E115E6 /* FirebaseFirestore in Frameworks */,
 				1373EE3F2CD523D000E115E6 /* FirebaseAnalytics in Frameworks */,
+				ACCB7F392CD7053900794985 /* FirebaseStorage in Frameworks */,
 				1373EE412CD523D000E115E6 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +129,7 @@
 				1373EE402CD523D000E115E6 /* FirebaseAuth */,
 				1373EE422CD523D000E115E6 /* FirebaseCrashlytics */,
 				1373EE442CD523D000E115E6 /* FirebaseFirestore */,
+				ACCB7F382CD7053900794985 /* FirebaseStorage */,
 			);
 			productName = Lessgo;
 			productReference = 13AB57E12CC1B43A00BDDB20 /* Lessgo.app */;
@@ -410,6 +413,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Lessgo/Preview Content\"";
+				DEVELOPMENT_TEAM = Q66NH5Y4N4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -447,6 +451,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Lessgo/Preview Content\"";
+				DEVELOPMENT_TEAM = Q66NH5Y4N4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -633,6 +638,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		ACCB7F382CD7053900794985 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

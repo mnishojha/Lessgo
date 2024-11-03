@@ -137,12 +137,12 @@ struct TravelHomeView: View {
                 }
                 
                 // Bottom Navigation with Safe Area Inset
-                VStack {
-                    Spacer()
-                    BottomNavigationBar()
-                        .background(Color.gray.opacity(0.1))
-                        .safeAreaInset(edge: .bottom) { Color.clear.frame(height: 0) }
-                }
+//                VStack {
+//                    Spacer()
+//                    BottomNavigationBar()
+//                        .background(Color.gray.opacity(0.1))
+//                        .safeAreaInset(edge: .bottom) { Color.clear.frame(height: 0) }
+//                }
             }
             .foregroundColor(.white)
         }
@@ -217,26 +217,26 @@ struct CountryCard: View {
     }
 }
 
-struct BottomNavigationBar: View {
-    var body: some View {
-        HStack {
-            TabButton(imageName: "house.fill", isSelected: true)
-            TabButton(imageName: "globe")
-            AddButton()
-            TabButton(imageName: "mappin")
-            TabButton(imageName: "message")
-        }
-        .padding(.vertical, 8)
-        .padding(.horizontal)
-        .background(Color.gray.opacity(0.1))
-        .overlay(
-            Rectangle()
-                .frame(height: 1)
-                .foregroundColor(.gray.opacity(0.2)),
-            alignment: .top
-        )
-    }
-}
+//struct BottomNavigationBar: View {
+//    var body: some View {
+//        HStack {
+//            TabButton(imageName: "house.fill", isSelected: true)
+//            TabButton(imageName: "globe")
+//            AddButton()
+//            TabButton(imageName: "mappin")
+//            TabButton(imageName: "message")
+//        }
+//        .padding(.vertical, 8)
+//        .padding(.horizontal)
+//        .background(Color.gray.opacity(0.1))
+//        .overlay(
+//            Rectangle()
+//                .frame(height: 1)
+//                .foregroundColor(.gray.opacity(0.2)),
+//            alignment: .top
+//        )
+//    }
+//}
 
 struct TabButton: View {
     let imageName: String

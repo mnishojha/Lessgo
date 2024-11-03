@@ -54,6 +54,7 @@ struct ChatsView: View {
                             Text("No Messages Yet")
                                 .font(.title2)
                                 .fontWeight(.semibold)
+                               
                             
                             Text("You haven't messaged anyone!")
                                 .foregroundColor(.gray)
@@ -116,15 +117,16 @@ struct ChatsView: View {
                     Spacer()
                     
                     // Bottom Navigation
-                    HStack {
-                        TabBarButton(imageName: "house", isSelected: false)
-                        TabBarButton(imageName: "globe", isSelected: false)
-                        AddButton()
-                        TabBarButton(imageName: "mappin", isSelected: false)
-                        TabBarButton(imageName: "message.fill", isSelected: true)
-                    }
-                    .padding()
-                    .background(Color.gray.opacity(0.1))
+//                    HStack {
+//                        TabBarButton(imageName: "house", isSelected: false)
+//                        TabBarButton(imageName: "globe", isSelected: false)
+//                        AddButton()
+//                        TabBarButton(imageName: "mappin", isSelected: false)
+//                        TabBarButton(imageName: "message.fill", isSelected: true)
+//                    }
+//                    .padding()
+//                    .background(Color.gray.opacity(0.1))
+                       
                 }
             }
             .foregroundColor(.white)

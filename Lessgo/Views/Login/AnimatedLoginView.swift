@@ -1,4 +1,6 @@
 import SwiftUI
+import FirebaseAuth
+import Firebase
 
 struct ContentView: View {
     @State private var email = ""
@@ -8,6 +10,7 @@ struct ContentView: View {
     @State private var isLoginButtonPressed = false
     @State private var isSignUpButtonPressed = false
     @State private var showPassword = false
+    @State private var errorMessage = ""
     
     //This is a test push for the view
     var body: some View {
@@ -24,10 +27,11 @@ struct ContentView: View {
                 }
                 .padding(.horizontal, 20)
                 
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                
                 loginButton
-                
                 signUpButton
-                
                 forgotPasswordButton
             }
         }
@@ -109,8 +113,7 @@ struct ContentView: View {
             withAnimation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0)) {
                 isLoginButtonPressed.toggle()
             }
-            
-            // Add your login logic here
+            loginUser()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0)) {
@@ -136,7 +139,7 @@ struct ContentView: View {
                 isSignUpButtonPressed.toggle()
             }
             
-            // Add your sign up navigation logic here
+            signUpUser()
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 withAnimation(.spring(response: 0.3, dampingFraction: 0.6, blendDuration: 0)) {
@@ -169,7 +172,57 @@ struct ContentView: View {
                 .underline()
         }
     }
-}
+    
+    // MARK: - Firebase Login Function
+     func loginUser() {
+         #if !targetEnvironment(simulator)
+         Auth.auth().signIn(withEmail: email, password: password) { result, error in
+             if let error = error {
+                 self.errorMessage = "Error: \(error.localizedDescription)"
+             } else {
+                 self.errorMessage = ""
+             }
+         }
+         #endif
+     }
+     
+     // MARK: - Firebase Sign-Up Function
+     func signUpUser() {
+         #if !targetEnvironment(simulator)
+         Auth.auth().createUser(withEmail: email, password: password) { result, error in
+             if let error = error {
+                 self.errorMessage = "Error: \(error.localizedDescription)"
+             } else {
+                 self.errorMessage = ""
+                 saveUserProfileData()
+             }
+         }
+         #endif
+     }
+     
+     // MARK: - Save Additional User Profile Data in Firestore
+     func saveUserProfileData() {
+         #if !targetEnvironment(simulator)
+         let db = Firestore.firestore()
+         let userID = Auth.auth().currentUser?.uid ?? "Unknown"
+         
+         db.collection("users").document(userID).setData([
+             "email": email,
+             "dateOfBirth": "", // Populate with actual data from Dateofbirth view
+             "interests": "",   // Populate with actual data from InterestView
+             "language": "",    // Populate with actual data from LanguageView
+             "location": ""     // Populate with actual data from LocationView
+         ]) { error in
+             if let error = error {
+                 self.errorMessage = "Error saving data: \(error.localizedDescription)"
+             }
+         }
+         #endif
+     }
+ }
+
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
