@@ -6,25 +6,36 @@ struct MatchingView: View {
     let location = "India"
     let about = "Hii, I'm a traveler :)"
     let interests = ["Mountain", "Hiking", "Beach", "Nature"]
+    
+    // List of profile images
+    let images = ["Profile", "Profile2", "oldman"] // Add image names here
 
-    // Gesture state
+    // State variables
     @State private var offset = CGSize.zero
     @State private var isMatched = false
+    @State private var currentImageIndex = 0
+    @State private var isZoomed = false  // State to manage zoom view
+    @State private var likeStatus: String? = nil  // "Like" or "Dislike" status
 
     var body: some View {
         ZStack {
-            // Background color for dark theme
+            // Background color
             Color.black.edgesIgnoringSafeArea(.all)
 
             // Profile Card
             VStack {
-                Image("Profile") // Replace with actual image or URL
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 200, height: 200)
-                    .clipShape(Circle())
-                    .shadow(radius: 10)
-                
+                if currentImageIndex < images.count {
+                    Image(images[currentImageIndex])
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 200, height: 200)
+                        .clipShape(Circle())
+                        .shadow(radius: 10)
+                        .onTapGesture {
+                            isZoomed = true // Show zoomed view on tap
+                        }
+                }
+
                 Text(name)
                     .font(.largeTitle)
                     .fontWeight(.bold)
@@ -37,7 +48,7 @@ struct MatchingView: View {
                     .padding()
                     .foregroundColor(.white)
                 
-                // Displaying Interests
+                // Interests
                 HStack {
                     ForEach(interests, id: \.self) { interest in
                         Text(interest)
@@ -55,12 +66,19 @@ struct MatchingView: View {
                         .foregroundColor(.green)
                         .transition(.scale)
                 }
+
+                if let status = likeStatus {
+                    Text(status)
+                        .font(.title)
+                        .foregroundColor(status == "Liked" ? .green : .red)
+                        .transition(.scale)
+                }
             }
             .padding()
             .background(Color.gray.opacity(0.2))
             .cornerRadius(20)
             .shadow(radius: 10)
-            .offset(x: offset.width, y: 0)
+            .offset(x: offset.width, y: offset.height)
             .rotationEffect(.degrees(Double(offset.width / 20)))
             .gesture(
                 DragGesture()
@@ -68,34 +86,75 @@ struct MatchingView: View {
                         offset = gesture.translation
                     }
                     .onEnded { _ in
-                        if offset.width > 100 {
-                            // Right swipe action (Yes)
-                            withAnimation {
-                                isMatched = true
-                                offset = CGSize(width: 500, height: 0)
-                            }
-                        } else if offset.width < -100 {
-                            // Left swipe action (No)
-                            withAnimation {
-                                offset = CGSize(width: -500, height: 0)
-                            }
-                        } else {
-                            // Reset position if swipe is too weak
-                            offset = .zero
-                        }
+                        handleSwipe()
                     }
             )
-            .onAppear {
-                offset = .zero
-                isMatched = false
+            .sheet(isPresented: $isZoomed) {
+                ZoomedImageView(imageName: images[currentImageIndex])
             }
+        }
+    }
+    
+    // Function to handle different swipe directions
+    private func handleSwipe() {
+        withAnimation {
+            if offset.width > 100 {
+                // Right swipe action (Yes)
+                isMatched = true
+                offset = CGSize(width: 500, height: 0)
+            } else if offset.width < -100 {
+                // Left swipe action (No)
+                offset = CGSize(width: -500, height: 0)
+            } else if offset.height < -100 {
+                // Up swipe action (Like)
+                likeStatus = "Liked"
+                offset = CGSize(width: 0, height: -500)
+            } else if offset.height > 100 {
+                // Down swipe action (Dislike)
+                likeStatus = "Disliked"
+                offset = CGSize(width: 0, height: 500)
+            } else {
+                // Reset if swipe is too weak
+                offset = .zero
+                likeStatus = nil
+            }
+            // Move to the next image after swipe
+            if offset != .zero {
+                nextImage()
+            }
+        }
+    }
+    
+    // Function to move to the next image or reset
+    private func nextImage() {
+        offset = .zero
+        isMatched = false
+        likeStatus = nil
+        currentImageIndex = (currentImageIndex + 1) % images.count
+    }
+}
+
+// View to display the zoomed image
+struct ZoomedImageView: View {
+    let imageName: String
+
+    var body: some View {
+        VStack {
+            Image(imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.black.edgesIgnoringSafeArea(.all))
+                .onTapGesture {
+                    UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true)
+                }
         }
     }
 }
 
 struct MatchingView_Previews: PreviewProvider {
     static var previews: some View {
-        MatchingView() // Updated to call MatchingView instead of ProfileView
-            .preferredColorScheme(.dark) // Dark theme preview
+        MatchingView()
+            .preferredColorScheme(.dark)
     }
 }
