@@ -1,0 +1,115 @@
+import SwiftUI
+
+struct StylizedSplashView: View {
+    @State private var isActive = false
+    @State private var size = 0.8
+    @State private var opacity = 0.5
+    @State private var rotation = 0.0
+    
+    var body: some View {
+        if isActive {
+            ContentView()
+        } else {
+            ZStack {
+                // Solid black background
+                Color.black
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    // Logo and title container
+                    VStack(spacing: 25) {
+                        // App icon with circular shape
+                        ZStack {
+                            Circle()
+                                .fill(Color.black)
+                                .frame(width: 120, height: 120)
+                                .shadow(color: Color.white.opacity(0.3), radius: 15, x: 0, y: 5)
+                            
+                            Image(systemName: "mountain.2")
+                                .font(.system(size: 60))
+                                .foregroundColor(.white)
+                                
+                        }
+                        
+                        // App title with pure white color
+                        Text("LESSGO")
+                            .font(.custom("Helvetica Neue", size: 46))
+                            .fontWeight(.heavy)
+                            .foregroundColor(.white)
+                            .shadow(color: .white.opacity(0.3), radius: 5, x: 0, y: 2)
+                        
+                        // Tagline
+                        Text("Find Your Adventure Companion")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding(.top, 4)
+                        
+                        // Loading indicator
+                        LoadingIndicator()
+                            .padding(.top, 40)
+                    }
+                    .scaleEffect(size)
+                    .opacity(opacity)
+                    .onAppear {
+                        // Combined animations
+                        withAnimation(.easeInOut(duration: 1.2)) {
+                            self.size = 0.9
+                            self.opacity = 1.0
+                        }
+                        
+                        withAnimation(.linear(duration: 1.0).repeatForever(autoreverses: false)) {
+                            self.rotation = 360.0
+                        }
+                    }
+                }
+                .padding()
+            }
+            .onAppear {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+                    withAnimation {
+                        self.isActive = true
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Enhanced loading indicator with black-and-white theme
+struct LoadingIndicator: View {
+    @State private var isLoading = false
+    
+    var body: some View {
+        ZStack {
+            Circle()
+                .trim(from: 0, to: 0.7)
+                .stroke(
+                    AngularGradient(
+                        gradient: Gradient(colors: [
+                            Color.white.opacity(0.3),
+                            Color.white
+                        ]),
+                        center: .center
+                    ),
+                    style: StrokeStyle(lineWidth: 3, lineCap: .round)
+                )
+                .frame(width: 35, height: 35)
+                .rotationEffect(Angle(degrees: isLoading ? 360 : 0))
+                .animation(
+                    Animation.linear(duration: 1)
+                        .repeatForever(autoreverses: false),
+                    value: isLoading
+                )
+                .onAppear() {
+                    self.isLoading = true
+                }
+        }
+    }
+}
+
+// Preview
+struct StylizedSplashView_Previews: PreviewProvider {
+    static var previews: some View {
+        StylizedSplashView()
+    }
+}
