@@ -16,12 +16,14 @@ struct MatchingView: View {
     @State private var currentImageIndex = 0
     @State private var isZoomed = false  // State to manage zoom view
     @State private var likeStatus: String? = nil  // "Like" or "Dislike" status
+    @State private var showLikeIcon = false  // State for heart animation
+    @State private var showDislikeIcon = false  // State for cross animation
 
     var body: some View {
         ZStack {
             // Background color
             Color.black.edgesIgnoringSafeArea(.all)
-
+            
             // Profile Card
             VStack {
                 if currentImageIndex < images.count {
@@ -66,13 +68,6 @@ struct MatchingView: View {
                         .foregroundColor(.green)
                         .transition(.scale)
                 }
-
-                if let status = likeStatus {
-                    Text(status)
-                        .font(.title)
-                        .foregroundColor(status == "Liked" ? .green : .red)
-                        .transition(.scale)
-                }
             }
             .padding()
             .background(Color.gray.opacity(0.2))
@@ -92,6 +87,27 @@ struct MatchingView: View {
             .sheet(isPresented: $isZoomed) {
                 ZoomedImageView(imageName: images[currentImageIndex])
             }
+            
+            // Like and Dislike animations
+            if showLikeIcon {
+                Image(systemName: "heart.fill")
+                    .font(.system(size: 100))
+                    .foregroundColor(.green)
+                    .opacity(showLikeIcon ? 1 : 0)
+                    .scaleEffect(showLikeIcon ? 1 : 0.5)
+                    .transition(.scale)
+                    .animation(.easeInOut(duration: 0.5), value: showLikeIcon)
+            }
+            
+            if showDislikeIcon {
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 100))
+                    .foregroundColor(.red)
+                    .opacity(showDislikeIcon ? 1 : 0)
+                    .scaleEffect(showDislikeIcon ? 1 : 0.5)
+                    .transition(.scale)
+                    .animation(.easeInOut(duration: 0.5), value: showDislikeIcon)
+            }
         }
     }
     
@@ -108,10 +124,18 @@ struct MatchingView: View {
             } else if offset.height < -100 {
                 // Up swipe action (Like)
                 likeStatus = "Liked"
+                showLikeIcon = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    showLikeIcon = false
+                }
                 offset = CGSize(width: 0, height: -500)
             } else if offset.height > 100 {
                 // Down swipe action (Dislike)
                 likeStatus = "Disliked"
+                showDislikeIcon = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+                    showDislikeIcon = false
+                }
                 offset = CGSize(width: 0, height: 500)
             } else {
                 // Reset if swipe is too weak
@@ -137,6 +161,7 @@ struct MatchingView: View {
 // View to display the zoomed image
 struct ZoomedImageView: View {
     let imageName: String
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack {
@@ -146,7 +171,7 @@ struct ZoomedImageView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.black.edgesIgnoringSafeArea(.all))
                 .onTapGesture {
-                    UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true)
+                    presentationMode.wrappedValue.dismiss()
                 }
         }
     }
