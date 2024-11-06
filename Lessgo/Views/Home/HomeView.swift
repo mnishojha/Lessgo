@@ -59,7 +59,7 @@ struct TravelHomeView: View {
                         // Trending Plans
                         VStack(alignment: .leading, spacing: 16) {
                             HStack {
-                                Text("Trending Plans")
+                                Text("Explore")
                                     .font(.title2)
                                     .fontWeight(.bold)
                                 Spacer()
@@ -91,7 +91,7 @@ struct TravelHomeView: View {
                         // Plans you joined
                         VStack(alignment: .leading, spacing: 16) {
                             HStack {
-                                Text("Plans you joined")
+                                Text("Your Plans")
                                     .font(.title2)
                                     .fontWeight(.bold)
                                 Spacer()
@@ -116,6 +116,7 @@ struct TravelHomeView: View {
                                     .font(.title2)
                                     .fontWeight(.bold)
                                 Spacer()
+                                
                                 Button(action: {}) {
                                     HStack {
                                         Text("See all")
