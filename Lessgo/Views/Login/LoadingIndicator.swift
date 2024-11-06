@@ -1,10 +1,3 @@
-//
-//  LoadingIndicator.swift
-//  Lessgo
-//
-//  Created by Israel on 11/6/24.
-//
-
 import SwiftUI
 
 // Enhanced loading indicator with black-and-white theme
