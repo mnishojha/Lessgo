@@ -22,5 +22,5 @@ struct CountryCard: View {
 
 
 #Preview {
-    CountryCard()
+    CountryCard(image:"Profile")
 }

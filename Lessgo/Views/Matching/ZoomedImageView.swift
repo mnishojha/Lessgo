@@ -26,5 +26,5 @@ struct ZoomedImageView: View {
 }
 
 #Preview {
-    ZoomedImageView()
+    ZoomedImageView(imageName: "Profile")
 }
