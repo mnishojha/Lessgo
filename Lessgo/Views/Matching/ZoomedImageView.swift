@@ -25,6 +25,3 @@ struct ZoomedImageView: View {
     }
 }
 
-#Preview {
-    ZoomedImageView()
-}

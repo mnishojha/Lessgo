@@ -20,7 +20,3 @@ struct CountryCard: View {
     }
 }
 
-
-#Preview {
-    CountryCard()
-}
