@@ -1,0 +1,98 @@
+import SwiftUI
+import FirebaseAuth
+import Firebase
+
+struct ContentView: View {
+
+    @StateObject private var viewModel = ContentViewModel()
+    
+    @State private var isEmailFocused = false
+    @State private var isPasswordFocused = false
+    
+    var body: some View {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+            
+            VStack(spacing: 30) {
+                logoView
+                
+                VStack(spacing: 20) {
+                    CustomTextField(text: $viewModel.email, placeholder: "Email", isFocused: $isEmailFocused)
+                    CustomSecureField(text: $viewModel.password, placeholder: "Password", isFocused: $isPasswordFocused, showPassword: $viewModel.showPassword)
+                }
+                .padding(.horizontal, 20)
+                
+                Text(viewModel.errorMessage)
+                    .foregroundColor(.red)
+                
+                loginButton
+                signUpButton
+                forgotPasswordButton
+            }
+        }
+    }
+    
+    var logoView: some View {
+        Text("LESSGO")
+            .font(.system(size: 40, weight: .bold, design: .rounded))
+            .foregroundColor(.white)
+            .padding(.top, 50)
+    }
+    var loginButton: some View {
+        Button(action: {
+            viewModel.isLoginButtonPressed.toggle()
+            viewModel.loginUser()
+        }) {
+            Text("Log In")
+                .font(.headline)
+                .foregroundColor(.black)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.white)
+                .cornerRadius(10)
+                .scaleEffect(viewModel.isLoginButtonPressed ? 0.95 : 1)
+        }
+        .padding(.horizontal, 20)
+    }
+
+    
+    var signUpButton: some View {
+         Button(action: {
+             viewModel.isSignUpButtonPressed.toggle()
+             viewModel.signUpUser()
+         }) {
+             Text("New User? Sign Up")
+                 .font(.headline)
+                 .foregroundColor(.white)
+                 .frame(maxWidth: .infinity)
+                 .padding()
+                 .background(Color.clear)
+                 .overlay(
+                     RoundedRectangle(cornerRadius: 10)
+                         .stroke(Color.white, lineWidth: 1)
+                 )
+                 .cornerRadius(10)
+                 .scaleEffect(viewModel.isSignUpButtonPressed ? 0.95 : 1)
+         }
+         .padding(.horizontal, 20)
+     }
+    
+    var forgotPasswordButton: some View {
+        Button(action: {
+            // Add your forgot password logic here
+        }) {
+            Text("Forgot Password?")
+                .foregroundColor(.gray)
+                .underline()
+        }
+    }
+ }
+
+
+
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
