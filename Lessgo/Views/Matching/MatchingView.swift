@@ -158,24 +158,7 @@ struct MatchingView: View {
     }
 }
 
-// View to display the zoomed image
-struct ZoomedImageView: View {
-    let imageName: String
-    @Environment(\.presentationMode) var presentationMode
 
-    var body: some View {
-        VStack {
-            Image(imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.black.edgesIgnoringSafeArea(.all))
-                .onTapGesture {
-                    presentationMode.wrappedValue.dismiss()
-                }
-        }
-    }
-}
 
 struct MatchingView_Previews: PreviewProvider {
     static var previews: some View {

@@ -204,18 +204,18 @@ struct NoPlansView: View {
     }
 }
 
-struct CountryCard: View {
-    let image: String
-    
-    var body: some View {
-        Image(image)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(height: 150)
-            .clipped()
-            .cornerRadius(16)
-    }
-}
+//struct CountryCard: View {
+//    let image: String
+//    
+//    var body: some View {
+//        Image(image)
+//            .resizable()
+//            .aspectRatio(contentMode: .fill)
+//            .frame(height: 150)
+//            .clipped()
+//            .cornerRadius(16)
+//    }
+//}
 
 //struct BottomNavigationBar: View {
 //    var body: some View {
