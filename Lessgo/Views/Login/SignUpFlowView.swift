@@ -21,6 +21,12 @@ struct SignUpFlowView: View {
             case 2:
                 CountrySelectionView()
             // Add cases for other steps here, e.g., PictureUploadView, InterestsView, etc.
+            case 3:
+                AddPicturesView()
+            case 4:
+                InterestView()
+            case 5:
+                TripPlanningView()
             default:
                 ContentView() // Or the final destination view after completing the flow
             }
