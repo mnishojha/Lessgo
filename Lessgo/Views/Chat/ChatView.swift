@@ -6,7 +6,7 @@
 //
 import SwiftUI
 
-struct ChatsView: View {
+struct ChatView: View {
     @State private var searchText = ""
     
     var body: some View {
@@ -174,9 +174,9 @@ struct RecommendedTravelerRow: View {
     
 
 
-struct ChatsView_Previews: PreviewProvider {
+struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatsView()
+        ChatView()
             .preferredColorScheme(.dark)
     }
 }

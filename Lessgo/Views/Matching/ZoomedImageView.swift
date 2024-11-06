@@ -25,3 +25,7 @@ struct ZoomedImageView: View {
     }
 }
 
+#Preview {
+    ZoomedImageView(imageName: "oldman")
+}
+

@@ -24,7 +24,7 @@ struct MainTabView: View {
                     .tabItem {
                         Label("Matching", systemImage: "heart.circle")
                     }
-                ChatsView()
+                ChatView()
                     .tabItem {
                         Label("Chat", systemImage: "message.fill")
                     }

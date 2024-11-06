@@ -20,3 +20,7 @@ struct CountryCard: View {
     }
 }
 
+#Preview {
+    CountryCard(image:"Profile")
+}
+
