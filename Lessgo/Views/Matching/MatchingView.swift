@@ -2,7 +2,7 @@ import SwiftUI
 
 struct MatchingView: View {
     // Profile data
-    let name = "Max, 20"
+    let name = "me, 20"
     let location = "India"
     let about = "Hii, I'm a traveler :)"
     let interests = ["Mountain", "Hiking", "Beach", "Nature"]

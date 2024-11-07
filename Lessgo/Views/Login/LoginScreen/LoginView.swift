@@ -2,7 +2,7 @@ import SwiftUI
 import FirebaseAuth
 import Firebase
 
-struct ContentView: View {
+struct LoginView: View {
 
     @StateObject private var viewModel = ContentViewModel()
     
@@ -91,8 +91,8 @@ struct ContentView: View {
 
 
 
-struct ContentView_Previews: PreviewProvider {
+struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        LoginView()
     }
 }

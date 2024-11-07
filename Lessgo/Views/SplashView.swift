@@ -8,7 +8,7 @@ struct StylizedSplashView: View {
     
     var body: some View {
         if isActive {
-            ContentView()
+            LoginView()
         } else {
             ZStack {
                 // Solid black background

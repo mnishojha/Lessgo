@@ -75,7 +75,7 @@ struct ChatView: View {
                             VStack(spacing: 0) {
                                 RecommendedTravelerRow(
                                     image: "PIC1",
-                                    name: "MAX",
+                                    name: "me",
                                     country: "India",
                                     flag: ""
                                 )

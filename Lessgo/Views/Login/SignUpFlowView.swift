@@ -28,7 +28,7 @@ struct SignUpFlowView: View {
             case 5:
                 TripPlanningView()
             default:
-                ContentView() // Or the final destination view after completing the flow
+                LoginView() // Or the final destination view after completing the flow
             }
         }
         .transition(.slide)
