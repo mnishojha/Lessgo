@@ -11,6 +11,7 @@
 		1373EE412CD523D000E115E6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE402CD523D000E115E6 /* FirebaseAuth */; };
 		1373EE432CD523D000E115E6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE422CD523D000E115E6 /* FirebaseCrashlytics */; };
 		1373EE452CD523D000E115E6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE442CD523D000E115E6 /* FirebaseFirestore */; };
+		1375B6C02CDEC516009D21DD /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 1375B6BF2CDEC516009D21DD /* FirebaseFirestoreCombine-Community */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,6 +63,7 @@
 				1373EE432CD523D000E115E6 /* FirebaseCrashlytics in Frameworks */,
 				1373EE452CD523D000E115E6 /* FirebaseFirestore in Frameworks */,
 				1373EE3F2CD523D000E115E6 /* FirebaseAnalytics in Frameworks */,
+				1375B6C02CDEC516009D21DD /* FirebaseFirestoreCombine-Community in Frameworks */,
 				1373EE412CD523D000E115E6 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,12 +85,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1375B6BC2CDEC3A9009D21DD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		13AB57D82CC1B43A00BDDB20 = {
 			isa = PBXGroup;
 			children = (
 				13AB57E32CC1B43A00BDDB20 /* Lessgo */,
 				13AB57F52CC1B43C00BDDB20 /* LessgoTests */,
 				13AB57FF2CC1B43C00BDDB20 /* LessgoUITests */,
+				1375B6BC2CDEC3A9009D21DD /* Frameworks */,
 				13AB57E22CC1B43A00BDDB20 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -127,6 +137,7 @@
 				1373EE402CD523D000E115E6 /* FirebaseAuth */,
 				1373EE422CD523D000E115E6 /* FirebaseCrashlytics */,
 				1373EE442CD523D000E115E6 /* FirebaseFirestore */,
+				1375B6BF2CDEC516009D21DD /* FirebaseFirestoreCombine-Community */,
 			);
 			productName = Lessgo;
 			productReference = 13AB57E12CC1B43A00BDDB20 /* Lessgo.app */;
@@ -657,6 +668,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		1375B6BF2CDEC516009D21DD /* FirebaseFirestoreCombine-Community */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
