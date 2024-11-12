@@ -3,31 +3,31 @@ import FirebaseAuth
 import Firebase
 
 struct LoginView: View {
-
     @StateObject private var viewModel = ContentViewModel()
-    
     @State private var isEmailFocused = false
     @State private var isPasswordFocused = false
     
     var body: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
-            
-            VStack(spacing: 30) {
-                logoView
+        NavigationView {  // Wrap everything in NavigationView
+            ZStack {
+                Color.black.edgesIgnoringSafeArea(.all)
                 
-                VStack(spacing: 20) {
-                    CustomTextField(text: $viewModel.email, placeholder: "Email", isFocused: $isEmailFocused)
-                    CustomSecureField(text: $viewModel.password, placeholder: "Password", isFocused: $isPasswordFocused, showPassword: $viewModel.showPassword)
+                VStack(spacing: 30) {
+                    logoView
+                    
+                    VStack(spacing: 20) {
+                        CustomTextField(text: $viewModel.email, placeholder: "Email", isFocused: $isEmailFocused)
+                        CustomSecureField(text: $viewModel.password, placeholder: "Password", isFocused: $isPasswordFocused, showPassword: $viewModel.showPassword)
+                    }
+                    .padding(.horizontal, 20)
+                    
+                    Text(viewModel.errorMessage)
+                        .foregroundColor(.red)
+                    
+                    loginButton
+                    signUpButton // Ensure this is the NavigationLink we’ll use for SignUpFlowView
+                    forgotPasswordButton
                 }
-                .padding(.horizontal, 20)
-                
-                Text(viewModel.errorMessage)
-                    .foregroundColor(.red)
-                
-                loginButton
-                signUpButton
-                forgotPasswordButton
             }
         }
     }
@@ -55,27 +55,24 @@ struct LoginView: View {
         .padding(.horizontal, 20)
     }
 
-    
     var signUpButton: some View {
-         Button(action: {
-             viewModel.isSignUpButtonPressed.toggle()
-             viewModel.signUpUser()
-         }) {
-             Text("New User? Sign Up")
-                 .font(.headline)
-                 .foregroundColor(.white)
-                 .frame(maxWidth: .infinity)
-                 .padding()
-                 .background(Color.clear)
-                 .overlay(
-                     RoundedRectangle(cornerRadius: 10)
-                         .stroke(Color.white, lineWidth: 1)
-                 )
-                 .cornerRadius(10)
-                 .scaleEffect(viewModel.isSignUpButtonPressed ? 0.95 : 1)
-         }
-         .padding(.horizontal, 20)
-     }
+        NavigationLink(
+            destination: SignUpFlowView(viewModel: viewModel) // Pass viewModel here
+        ) {
+            Text("New User? Sign Up")
+                .font(.headline)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.clear)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.white, lineWidth: 1)
+                )
+                .cornerRadius(10)
+        }
+        .padding(.horizontal, 20)
+    }
     
     var forgotPasswordButton: some View {
         Button(action: {

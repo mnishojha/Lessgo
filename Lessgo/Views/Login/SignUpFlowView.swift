@@ -8,27 +8,38 @@
 import SwiftUI
 
 struct SignUpFlowView: View {
+    @ObservedObject var viewModel: ContentViewModel // Accept viewModel as a parameter
     @State private var currentStep = 1
-    @State private var dateOfBirth = Date()
-    @State private var location = ""
-    // Add other properties to store data from each step as needed
-
+    
     var body: some View {
         VStack {
             switch currentStep {
             case 1:
-                DateOfBirthView()
+                DateOfBirthView(viewModel: viewModel) {
+                    goToNextStep()
+                }
             case 2:
-                CountrySelectionView()
-            // Add cases for other steps here, e.g., PictureUploadView, InterestsView, etc.
+                CountrySelectionView(viewModel: viewModel) {
+                    goToNextStep()
+                }
             case 3:
-                AddPicturesView()
+                AddPicturesView(viewModel: viewModel) {
+                    goToNextStep()
+                }
             case 4:
-                InterestView()
+                InterestView(viewModel: viewModel) {
+                    goToNextStep()
+                }
             case 5:
-                TripPlanningView()
+                TripPlanningView(viewModel: viewModel) {
+                    goToNextStep()
+                }
+            case 6:
+                LanguageSelectionView(viewModel: viewModel) {
+                    goToNextStep()
+                }
             default:
-                LoginView() // Or the final destination view after completing the flow
+                LoginView()
             }
         }
         .transition(.slide)
@@ -41,6 +52,3 @@ struct SignUpFlowView: View {
     }
 }
 
-#Preview {
-    SignUpFlowView()
-}

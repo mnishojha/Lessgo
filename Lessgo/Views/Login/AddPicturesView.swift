@@ -1,19 +1,14 @@
-//
-//  AddPicView.swift
-//  Lessgo
-//
-//  Created by manish ojha on 02/11/24.
-//
 import SwiftUI
 
 struct AddPicturesView: View {
-    @State private var photos: [UIImage?] = [UIImage(named: "photo1"), UIImage(named: "photo2"), nil]
+    @ObservedObject var viewModel: ContentViewModel
+    @State private var showImagePicker = false
+    @State private var selectedImageIndex: Int?
+    
+    var onNext: () -> Void
     
     var body: some View {
         VStack(spacing: 32) {
-            // Progress Indicator
-          
-            
             // Title
             Text("Add pictures of yourself")
                 .font(.system(size: 24, weight: .bold))
@@ -21,8 +16,8 @@ struct AddPicturesView: View {
             
             // Photos Grid
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(0..<photos.count, id: \.self) { index in
-                    if let image = photos[index] {
+                ForEach(0..<viewModel.photos.count, id: \.self) { index in
+                    if let image = viewModel.photos[index] {
                         ZStack(alignment: .topTrailing) {
                             Image(uiImage: image)
                                 .resizable()
@@ -33,7 +28,7 @@ struct AddPicturesView: View {
                             
                             // Remove button
                             Button(action: {
-                                photos[index] = nil
+                                viewModel.photos[index] = nil
                             }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .foregroundColor(.white)
@@ -44,7 +39,8 @@ struct AddPicturesView: View {
                         }
                     } else {
                         Button(action: {
-                            // Action to add photo
+                            selectedImageIndex = index
+                            showImagePicker = true
                         }) {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 10)
@@ -65,7 +61,7 @@ struct AddPicturesView: View {
             
             // Continue Button
             Button(action: {
-                // Action for continue button
+                onNext()
             }) {
                 Text("Continue")
                     .font(.system(size: 18, weight: .bold))
@@ -79,12 +75,50 @@ struct AddPicturesView: View {
         }
         .padding(.top, 20)
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .sheet(isPresented: $showImagePicker) {
+            ImagePicker(selectedImage: $viewModel.photos[selectedImageIndex ?? 0])
+        }
+    }
+}
+
+// ImagePicker View for selecting images
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var selectedImage: UIImage?
+    
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.delegate = context.coordinator
+        picker.sourceType = .photoLibrary
+        return picker
+    }
+    
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+        let parent: ImagePicker
+        
+        init(_ parent: ImagePicker) {
+            self.parent = parent
+        }
+        
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            if let image = info[.originalImage] as? UIImage {
+                parent.selectedImage = image
+            }
+            picker.dismiss(animated: true)
+        }
     }
 }
 
 struct AddPicturesView_Previews: PreviewProvider {
     static var previews: some View {
-        AddPicturesView()
-            .preferredColorScheme(.dark)
+        AddPicturesView(viewModel: ContentViewModel()) {
+            // Sample onNext action
+        }
+        .preferredColorScheme(.dark)
     }
 }

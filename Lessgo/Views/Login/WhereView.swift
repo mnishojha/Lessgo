@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct CountrySelectionView: View {
+    @ObservedObject var viewModel: ContentViewModel
     @State private var selectedCountry = "India"
-    let countries = ["Australia", "United States", "Canada", "India", "United Kingdom"] // Add more as needed
+    let countries = ["Australia", "United States", "Canada", "India", "United Kingdom"]
+    
+    var onNext: () -> Void
     
     var body: some View {
         VStack(spacing: 32) {
-           
-            
-            
             // Title
             Text("Where are you from?")
                 .font(.system(size: 24, weight: .bold))
@@ -36,7 +36,7 @@ struct CountrySelectionView: View {
                 }
             } label: {
                 HStack {
-                    Image(systemName: "flag.fill") // Placeholder for the flag, replace with actual images if available
+                    Image(systemName: "flag.fill")
                         .foregroundColor(.white)
                     Text(selectedCountry)
                         .foregroundColor(.white)
@@ -54,7 +54,8 @@ struct CountrySelectionView: View {
             
             // Continue Button
             Button(action: {
-                // Action for continue button
+                viewModel.location = selectedCountry
+                onNext()
             }) {
                 Text("Continue")
                     .font(.system(size: 18, weight: .bold))
@@ -73,7 +74,9 @@ struct CountrySelectionView: View {
 
 struct CountrySelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        CountrySelectionView()
-            .preferredColorScheme(.dark)
+        CountrySelectionView(viewModel: ContentViewModel()) {
+            // Sample onNext action
+        }
+        .preferredColorScheme(.dark)
     }
 }

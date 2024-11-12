@@ -16,7 +16,7 @@ struct LessgoApp: App {
     }
     var body: some Scene {
         WindowGroup {
-            TravelHomeView()
+            LoginView()
         }
     }
 }

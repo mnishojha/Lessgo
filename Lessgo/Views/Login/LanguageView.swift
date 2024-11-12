@@ -1,8 +1,12 @@
 import SwiftUI
 
 struct LanguageSelectionView: View {
+    @ObservedObject var viewModel: ContentViewModel
     @State private var searchText = ""
-    @State private var selectedLanguages: Set<String> = ["English"]
+    @State private var selectedLanguages: Set<String> = ["English"] // Default selection
+    
+    var onNext: () -> Void
+    
     private let languages = [
         "English", "Mandarin Chinese", "Hindi", "Spanish", "French", "Standard Arabic",
         "Bengali", "Portuguese", "Russian", "Japanese", "Yue Chinese (Cantonese)", "German",
@@ -22,88 +26,86 @@ struct LanguageSelectionView: View {
         "Mossi", "Yiddish", "Belarusian", "Balinese", "Wolof", "Kongo", "Tatar", "Haitian",
         "Afrikaans", "Tswana"
     ]
-
+    
     var body: some View {
-        NavigationView {
-            VStack(alignment: .leading) {
-                // Title text
-                Text("How many languages do you speak")
-                    .font(.title)
-                    .bold()
-                    .foregroundColor(.white)
-
-                // Selected languages
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        ForEach(Array(selectedLanguages), id: \.self) { language in
-                            Text(language)
-                                .padding(10)
-                                .background(Color.gray.opacity(0.2))
-                                .cornerRadius(15)
-                                .foregroundColor(.white)
-                        }
-                    }
-                    .padding(.vertical, 10)
-                }
-
-                // Search bar
+        VStack(alignment: .leading) {
+            // Title
+            Text("How many languages do you speak?")
+                .font(.title)
+                .bold()
+                .foregroundColor(.white)
+            
+            // Selected languages display
+            ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    TextField("Search", text: $searchText)
-                        .foregroundColor(.white)
-                        .padding(10)
+                    ForEach(Array(selectedLanguages), id: \.self) { language in
+                        Text(language)
+                            .padding(10)
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(15)
+                            .foregroundColor(.white)
+                    }
                 }
-                .background(Color.gray.opacity(0.2))
-                .cornerRadius(10)
-                .padding(.bottom, 10)
-
-                // List of languages
-                List {
-                    ForEach(filteredLanguages(), id: \.self) { language in
-                        HStack {
-                            Text(language)
-                                .foregroundColor(.white)
-                            Spacer()
-                            if selectedLanguages.contains(language) {
-                                Image(systemName: "checkmark.circle.fill")
-                                    .foregroundColor(.blue)
-                            } else {
-                                Circle()
-                                    .fill(Color.gray)
-                                    .frame(width: 20, height: 20)
-                            }
-                        }
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            toggleSelection(for: language)
+                .padding(.vertical, 10)
+            }
+            
+            // Search bar
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.gray)
+                TextField("Search", text: $searchText)
+                    .foregroundColor(.white)
+                    .padding(10)
+            }
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(10)
+            .padding(.bottom, 10)
+            
+            // Filtered languages list
+            List {
+                ForEach(filteredLanguages(), id: \.self) { language in
+                    HStack {
+                        Text(language)
+                            .foregroundColor(.white)
+                        Spacer()
+                        if selectedLanguages.contains(language) {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.blue)
+                        } else {
+                            Circle()
+                                .fill(Color.gray)
+                                .frame(width: 20, height: 20)
                         }
                     }
-                    .listRowBackground(Color.black)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        toggleSelection(for: language)
+                    }
                 }
-                .listStyle(PlainListStyle())
-                .background(Color.black)
-
-                // Continue button
-                Button(action: {
-                    // Action when the Continue button is pressed
-                }) {
-                    Text("Continue")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                .padding()
-                .disabled(selectedLanguages.isEmpty) // Disable if no languages selected
+                .listRowBackground(Color.black)
+            }
+            .listStyle(PlainListStyle())
+            .background(Color.black)
+            
+            // Continue button
+            Button(action: {
+                viewModel.languages = Array(selectedLanguages) // Save languages to view model
+                onNext()
+            }) {
+                Text("Continue")
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(selectedLanguages.isEmpty ? Color.gray : Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
             }
             .padding()
-            .background(Color.black.edgesIgnoringSafeArea(.all))
-            .navigationBarBackButtonHidden(true)
+            .disabled(selectedLanguages.isEmpty)
         }
+        .padding()
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
-
+    
     private func toggleSelection(for language: String) {
         if selectedLanguages.contains(language) {
             selectedLanguages.remove(language)
@@ -111,7 +113,7 @@ struct LanguageSelectionView: View {
             selectedLanguages.insert(language)
         }
     }
-
+    
     private func filteredLanguages() -> [String] {
         if searchText.isEmpty {
             return languages
@@ -123,7 +125,9 @@ struct LanguageSelectionView: View {
 
 struct LanguageSelectionView_Previews: PreviewProvider {
     static var previews: some View {
-        LanguageSelectionView()
-            .preferredColorScheme(.dark) // Set preview to dark mode
+        LanguageSelectionView(viewModel: ContentViewModel()) {
+            // Sample onNext action
+        }
+        .preferredColorScheme(.dark)
     }
 }
