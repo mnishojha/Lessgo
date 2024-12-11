@@ -33,10 +33,53 @@ class ContentViewModel: ObservableObject {
     }
     
     func signUpUser() {
-        // Your sign-up logic here
+        guard !email.isEmpty, !password.isEmpty else {
+            errorMessage = "Email and password are required."
+            return
+        }
+
+        // Create user in Firebase Auth
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.errorMessage = "Error: \(error.localizedDescription)"
+                return
+            }
+
+            guard let userId = authResult?.user.uid else {
+                self.errorMessage = "Unable to retrieve user ID."
+                return
+            }
+
+            // Save data to Firestore
+            self.saveUserProfileData(userId: userId)
+        }
     }
-    
-    private func saveUserProfileData() {
-        // Your Firestore saving logic here, including the additional fields
+
+    private func saveUserProfileData(userId: String) {
+        let db = Firestore.firestore()
+
+        // Gather all data
+        let userData: [String: Any] = [
+            "email": email,
+            "dateOfBirth": dateOfBirth,
+            "location": location,
+            "interests": interests,
+            "language": language,
+            "upcomingTrip": upcomingTrip,
+            "topPick": topPick,
+            "languages": languages,
+            "photos": photos.compactMap { $0?.jpegData(compressionQuality: 0.8)?.base64EncodedString() }
+        ]
+
+        // Save to Firestore
+        db.collection("users").document(userId).setData(userData) { error in
+            if let error = error {
+                self.errorMessage = "Failed to save profile: \(error.localizedDescription)"
+            } else {
+                self.errorMessage = "Profile saved successfully!"
+            }
+        }
     }
 }

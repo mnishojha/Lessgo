@@ -56,19 +56,13 @@ struct LoginView: View {
     }
 
     var signUpButton: some View {
-        NavigationLink(
-            destination: SignUpFlowView(viewModel: viewModel) // Pass viewModel here
-        ) {
-            Text("New User? Sign Up")
+        NavigationLink(destination: SignUpFlowView(viewModel: viewModel)) {
+            Text("Sign Up")
                 .font(.headline)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.clear)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.white, lineWidth: 1)
-                )
+                .background(Color.blue)
                 .cornerRadius(10)
         }
         .padding(.horizontal, 20)
