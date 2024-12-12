@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1373EE3F2CD523D000E115E6 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE3E2CD523D000E115E6 /* FirebaseAnalytics */; };
-		1373EE412CD523D000E115E6 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE402CD523D000E115E6 /* FirebaseAuth */; };
-		1373EE432CD523D000E115E6 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE422CD523D000E115E6 /* FirebaseCrashlytics */; };
-		1373EE452CD523D000E115E6 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 1373EE442CD523D000E115E6 /* FirebaseFirestore */; };
-		1375B6C02CDEC516009D21DD /* FirebaseFirestoreCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 1375B6BF2CDEC516009D21DD /* FirebaseFirestoreCombine-Community */; };
+		139E4FD12D0B80100070A639 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 139E4FD02D0B80100070A639 /* FirebaseAuth */; };
+		139E4FD32D0B80170070A639 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 139E4FD22D0B80170070A639 /* FirebaseCore */; };
+		139E4FD52D0B802C0070A639 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 139E4FD42D0B802C0070A639 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,11 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1373EE432CD523D000E115E6 /* FirebaseCrashlytics in Frameworks */,
-				1373EE452CD523D000E115E6 /* FirebaseFirestore in Frameworks */,
-				1373EE3F2CD523D000E115E6 /* FirebaseAnalytics in Frameworks */,
-				1375B6C02CDEC516009D21DD /* FirebaseFirestoreCombine-Community in Frameworks */,
-				1373EE412CD523D000E115E6 /* FirebaseAuth in Frameworks */,
+				139E4FD32D0B80170070A639 /* FirebaseCore in Frameworks */,
+				139E4FD12D0B80100070A639 /* FirebaseAuth in Frameworks */,
+				139E4FD52D0B802C0070A639 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,11 +129,9 @@
 			);
 			name = Lessgo;
 			packageProductDependencies = (
-				1373EE3E2CD523D000E115E6 /* FirebaseAnalytics */,
-				1373EE402CD523D000E115E6 /* FirebaseAuth */,
-				1373EE422CD523D000E115E6 /* FirebaseCrashlytics */,
-				1373EE442CD523D000E115E6 /* FirebaseFirestore */,
-				1375B6BF2CDEC516009D21DD /* FirebaseFirestoreCombine-Community */,
+				139E4FD02D0B80100070A639 /* FirebaseAuth */,
+				139E4FD22D0B80170070A639 /* FirebaseCore */,
+				139E4FD42D0B802C0070A639 /* FirebaseFirestore */,
 			);
 			productName = Lessgo;
 			productReference = 13AB57E12CC1B43A00BDDB20 /* Lessgo.app */;
@@ -222,7 +216,7 @@
 			mainGroup = 13AB57D82CC1B43A00BDDB20;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				139E4FCF2D0B7F6A0070A639 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 13AB57E22CC1B43A00BDDB20 /* Products */;
@@ -425,8 +419,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lessgo/Preview Content\"";
-				DEVELOPMENT_TEAM = Q66NH5Y4N4;
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Lessgo;
@@ -451,7 +445,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = NO;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -471,8 +465,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Lessgo/Preview Content\"";
-				DEVELOPMENT_TEAM = Q66NH5Y4N4;
-				ENABLE_HARDENED_RUNTIME = NO;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Lessgo;
@@ -497,7 +491,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = NO;
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -520,11 +514,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manish.start.LessgoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lessgo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lessgo";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -544,11 +537,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manish.start.LessgoTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lessgo.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Lessgo";
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -567,11 +559,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manish.start.LessgoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_TARGET_NAME = Lessgo;
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -590,11 +581,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manish.start.LessgoUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx xros xrsimulator";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_TARGET_NAME = Lessgo;
 				XROS_DEPLOYMENT_TARGET = 2.0;
 			};
@@ -642,41 +632,31 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		139E4FCF2D0B7F6A0070A639 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 11.4.0;
+				minimumVersion = 11.6.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		1373EE3E2CD523D000E115E6 /* FirebaseAnalytics */ = {
+		139E4FD02D0B80100070A639 /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		1373EE402CD523D000E115E6 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 139E4FCF2D0B7F6A0070A639 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
 		};
-		1373EE422CD523D000E115E6 /* FirebaseCrashlytics */ = {
+		139E4FD22D0B80170070A639 /* FirebaseCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseCrashlytics;
+			package = 139E4FCF2D0B7F6A0070A639 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
-		1373EE442CD523D000E115E6 /* FirebaseFirestore */ = {
+		139E4FD42D0B802C0070A639 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			package = 139E4FCF2D0B7F6A0070A639 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		1375B6BF2CDEC516009D21DD /* FirebaseFirestoreCombine-Community */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1373EE3D2CD523D000E115E6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseFirestoreCombine-Community";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

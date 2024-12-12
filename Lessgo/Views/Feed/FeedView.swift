@@ -4,6 +4,7 @@ struct FeedView: View {
     @State private var searchText = ""
     
     var body: some View {
+      
         NavigationView {
             ZStack {
                 Color(.systemBackground).edgesIgnoringSafeArea(.all)

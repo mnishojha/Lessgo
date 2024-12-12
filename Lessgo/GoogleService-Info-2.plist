@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBs_xXQ7n7vYpgUGtYHuLajvoWH0FNuIiM</string>
+	<string>AIzaSyAO_uwuA_tzMHnFI0ODS5Rc_hD7gjIih-A</string>
 	<key>GCM_SENDER_ID</key>
-	<string>872202747397</string>
+	<string>413930434084</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.manish.start.Lessgo</string>
 	<key>PROJECT_ID</key>
-	<string>lessgo-5611b</string>
+	<string>lessgo-5ba7e</string>
 	<key>STORAGE_BUCKET</key>
-	<string>lessgo-5611b.firebasestorage.app</string>
+	<string>lessgo-5ba7e.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:872202747397:ios:a249ad068b363b1b6fa66c</string>
+	<string>1:413930434084:ios:70fcb150a38009bf70b2b1</string>
 </dict>
 </plist>
