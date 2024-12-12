@@ -105,7 +105,7 @@ struct ChatView: View {
                             LazyVStack(spacing: 0) {
                                 ForEach(filteredChats, id: \.["name"]) { chat in
                                     NavigationLink(
-                                        destination: ChatDetailView(chatPartner: chat["name"] ?? "")
+                                        destination: MessageView(chatPartner: chat["name"] ?? "")
                                             .onAppear { isInChatDetail = true }
                                             .onDisappear { isInChatDetail = false }
                                     ) {

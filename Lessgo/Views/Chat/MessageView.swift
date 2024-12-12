@@ -1,146 +1,194 @@
 import SwiftUI
 
-struct ChatDetailView: View {
+struct MessageView: View {
+    let chatPartner: String
     @State private var messageText = ""
     @State private var messages: [Message] = [
-        Message(text: "Can I call you back later?", isSentByMe: true),
-        Message(text: "Sure!!!!", isSentByMe: false)
+        // Sample messages - replace with actual chat history from Firebase
+        Message(id: "1", content: "Hey! How's your trip planning going?", isFromCurrentUser: false, timestamp: Date().addingTimeInterval(-86400)),
+        Message(id: "2", content: "It's going great! I'm thinking about visiting Paris next month", isFromCurrentUser: true, timestamp: Date().addingTimeInterval(-85400)),
+        Message(id: "3", content: "That's awesome! I was there last summer", isFromCurrentUser: false, timestamp: Date().addingTimeInterval(-84400)),
+        Message(id: "4", content: "Any recommendations for places to visit?", isFromCurrentUser: true, timestamp: Date().addingTimeInterval(-83400)),
+        Message(id: "5", content: "Definitely check out the local cafes in Montmartre!", isFromCurrentUser: false, timestamp: Date().addingTimeInterval(-82400))
     ]
+    @FocusState private var isFocused: Bool
     
     var body: some View {
         ZStack {
             Color.black.edgesIgnoringSafeArea(.all)
             
-            VStack {
-                ChatHeaderView(name: "Manish")
-                
-                ScrollView {
-                    VStack(spacing: 10) {
-                        ForEach(messages) { message in
-                            MessageBubbleView(message: message)
+            VStack(spacing: 0) {
+                // Chat messages
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(messages) { message in
+                                MessageBubble(message: message)
+                                    .padding(.horizontal)
+                                    .id(message.id)
+                            }
+                        }
+                        .padding(.top)
+                    }
+                    .onChange(of: messages) { _, newMessages in
+                        if let lastMessage = newMessages.last {
+                            withAnimation {
+                                proxy.scrollTo(lastMessage.id, anchor: .bottom)
+                            }
                         }
                     }
-                    .padding()
                 }
                 
-                MessageInputView(messageText: $messageText, onSend: sendMessage)
+                // Message input field
+                VStack {
+                    Divider()
+                        .background(Color.gray)
+                    
+                    HStack(spacing: 12) {
+                        TextField("", text: $messageText)
+                            .padding(12)
+                            .background(Color.gray.opacity(0.3))
+                            .cornerRadius(20)
+                            .focused($isFocused)
+                            .foregroundColor(.white)
+                            .accentColor(.blue)
+                            .font(.system(size: 16))
+                            .placeholder(when: messageText.isEmpty) {
+                                Text("Message")
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 16))
+                                    .padding(.leading, 16)
+                            }
+                        
+                        Button(action: sendMessage) {
+                            Image(systemName: "paperplane.fill")
+                                .foregroundColor(messageText.isEmpty ? .gray : .blue)
+                                .padding(8)
+                                .background(
+                                    Circle()
+                                        .fill(messageText.isEmpty ? Color.gray.opacity(0.3) : Color.blue.opacity(0.2))
+                                )
+                        }
+                        .disabled(messageText.isEmpty)
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                }
+                .background(Color.black.opacity(0.95))
             }
         }
-        .foregroundColor(.white)
+        .navigationTitle(chatPartner)
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    Text(chatPartner)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                    Text("Online")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                }
+            }
+        }
     }
     
-    // Function to send a message
     private func sendMessage() {
         guard !messageText.isEmpty else { return }
-        let newMessage = Message(text: messageText, isSentByMe: true)
-        messages.append(newMessage)
+        
+        let newMessage = Message(
+            id: UUID().uuidString,
+            content: messageText,
+            isFromCurrentUser: true,
+            timestamp: Date()
+        )
+        
+        withAnimation {
+            messages.append(newMessage)
+        }
+        
         messageText = ""
-    }
-}
-
-
-struct ChatHeaderView: View {
-    let name: String
-    
-    var body: some View {
-        HStack {
-            Button(action: {}) {
-                Image(systemName: "chevron.left")
-                    .font(.title2)
-                    .foregroundColor(.white)
-            }
-            
-            Spacer()
-            
-            VStack {
-                Image(systemName: "person.circle.fill")
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-                
-                Text(name)
-                    .foregroundColor(.white)
-                    .font(.headline)
-            }
-            
-            Spacer()
-            
-            Button(action: {}) {
-                Image(systemName: "phone.fill")
-                    .font(.title2)
-                    .foregroundColor(.blue)
+        
+        // Simulate response after 1-2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + Double.random(in: 1...2)) {
+            let response = Message(
+                id: UUID().uuidString,
+                content: getRandomResponse(),
+                isFromCurrentUser: false,
+                timestamp: Date()
+            )
+            withAnimation {
+                messages.append(response)
             }
         }
-        .padding()
-        .background(Color.gray.opacity(0.15))
+    }
+    
+    private func getRandomResponse() -> String {
+        let responses = [
+            "That's interesting!",
+            "Tell me more about that",
+            "Sounds good!",
+            "Great idea!",
+            "I'll keep that in mind",
+            "Thanks for sharing!",
+            "How exciting!",
+            "That's awesome!"
+        ]
+        return responses.randomElement() ?? "Cool!"
     }
 }
 
+// Message model
+struct Message: Identifiable, Equatable {
+    let id: String
+    let content: String
+    let isFromCurrentUser: Bool
+    let timestamp: Date
+    
+    static func == (lhs: Message, rhs: Message) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.content == rhs.content &&
+        lhs.isFromCurrentUser == rhs.isFromCurrentUser &&
+        lhs.timestamp == rhs.timestamp
+    }
+}
 
-struct MessageBubbleView: View {
+// Message bubble view
+struct MessageBubble: View {
     let message: Message
     
     var body: some View {
-        HStack {
-            if message.isSentByMe {
-                Spacer()
+        HStack(alignment: .bottom, spacing: 8) {
+            if message.isFromCurrentUser { Spacer() }
+            
+            VStack(alignment: message.isFromCurrentUser ? .trailing : .leading, spacing: 4) {
+                Text(message.content)
+                    .padding(12)
+                    .background(message.isFromCurrentUser ? Color.blue : Color.gray.opacity(0.3))
+                    .foregroundColor(.white)
+                    .cornerRadius(20)
+                
+                Text(formatDate(message.timestamp))
+                    .font(.caption2)
+                    .foregroundColor(.gray)
+                    .padding(.horizontal, 4)
             }
             
-            Text(message.text)
-                .padding()
-                .background(message.isSentByMe ? Color.blue : Color.green)
-                .foregroundColor(.white)
-                .cornerRadius(20)
-                .frame(maxWidth: .infinity, alignment: message.isSentByMe ? .trailing : .leading)
-            
-            if !message.isSentByMe {
-                Spacer()
-            }
+            if !message.isFromCurrentUser { Spacer() }
         }
-        .padding(.horizontal)
     }
-}
-
-
-struct MessageInputView: View {
-    @Binding var messageText: String
-    var onSend: () -> Void
     
-    var body: some View {
-        HStack {
-            Button(action: {}) {
-                Image(systemName: "plus.circle.fill")
-                    .font(.title2)
-                    .foregroundColor(.blue)
-            }
-            
-            TextField("Message", text: $messageText)
-                .padding()
-                .background(Color.gray.opacity(0.2))
-                .foregroundColor(.white)
-                .cornerRadius(20)
-            
-            Button(action: onSend) {
-                Image(systemName: "paperplane.fill")
-                    .font(.title2)
-                    .foregroundColor(.blue)
-            }
-        }
-        .padding()
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
     }
 }
 
-
-struct Message: Identifiable {
-    let id = UUID()
-    let text: String
-    let isSentByMe: Bool
-}
-
-
-struct ChatDetailView_Previews: PreviewProvider {
+struct MessageView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatDetailView()
-            .preferredColorScheme(.dark)
+        NavigationView {
+            MessageView(chatPartner: "Manish")
+        }
     }
 }

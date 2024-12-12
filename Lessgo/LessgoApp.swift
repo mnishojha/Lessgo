@@ -13,7 +13,16 @@ struct LessgoApp: App {
     @StateObject private var authManager = AuthenticationManager()
     
     init() {
-        FirebaseApp.configure()
+        // Add error handling for Firebase configuration
+        do {
+            if FirebaseApp.app() == nil {
+                if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") {
+                    FirebaseApp.configure()
+                } else {
+                    print("Error: Firebase configuration file not found")
+                }
+            }
+        }
     }
     
     var body: some Scene {
