@@ -7,7 +7,29 @@
 import SwiftUI
 
 struct ChatView: View {
+    @Binding var isInChatDetail: Bool
     @State private var searchText = ""
+    
+    // Sample chat data - replace with your actual data model/firebase model
+    let chats = [
+        ["name": "John Doe", "lastMessage": "Hey, how are you?"],
+        ["name": "Jane Smith", "lastMessage": "See you tomorrow!"],
+        ["name": "Mike Johnson", "lastMessage": "Thanks for the help!"]
+    ]
+    
+    // Filtered chats based on search text
+    var filteredChats: [[String: String]] {
+        if searchText.isEmpty {
+            return chats
+        }
+        return chats.filter { chat in
+            let name = chat["name"]?.lowercased() ?? ""
+            let message = chat["lastMessage"]?.lowercased() ?? ""
+            let searchQuery = searchText.lowercased()
+            
+            return name.contains(searchQuery) || message.contains(searchQuery)
+        }
+    }
     
     var body: some View {
         NavigationView {
@@ -36,97 +58,64 @@ struct ChatView: View {
                     HStack {
                         Image(systemName: "magnifyingglass")
                             .foregroundColor(.gray)
-                        TextField("Search", text: $searchText)
+                        TextField("", text: $searchText)
                             .foregroundColor(.white)
+                            .font(.system(size: 16))
+                            .accentColor(.blue)
+                            .autocapitalization(.none)
+                            .placeholder(when: searchText.isEmpty) {
+                                Text("Search chats")
+                                    .foregroundColor(.gray)
+                                    .font(.system(size: 16))
+                                    .padding(.leading, 4)
+                            }
+                            .overlay(
+                                HStack {
+                                    Spacer()
+                                    if !searchText.isEmpty {
+                                        Button(action: {
+                                            searchText = ""
+                                        }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.gray)
+                                                .padding(.trailing, 8)
+                                        }
+                                    }
+                                }
+                            )
                     }
                     .padding()
-                    .background(Color.gray.opacity(0.1))
+                    .background(Color.gray.opacity(0.3))
                     .cornerRadius(10)
                     .padding(.horizontal)
                     
-                    ScrollView {
-                        // No Messages State
-                        VStack(spacing: 12) {
-                            Image("globe_mascot") // Replace with your mascot image
-                                .resizable()
-                                .frame(width: 60, height: 60)
-                            
-                            Text("No Messages Yet")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                               
-                            
-                            Text("You haven't messaged anyone!")
+                    // Chat List
+                    if filteredChats.isEmpty {
+                        VStack(spacing: 20) {
+                            Spacer()
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 40))
                                 .foregroundColor(.gray)
+                            Text("No matches found")
+                                .foregroundColor(.gray)
+                            Spacer()
                         }
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(16)
-                        .padding()
-                        
-                        // Recommended Travelers
-                        VStack(alignment: .leading, spacing: 20) {
-                            Text("Recommended Travelers")
-                                .font(.title2)
-                                .fontWeight(.bold)
-                                .padding(.horizontal)
-                            
-                            VStack(spacing: 0) {
-                                RecommendedTravelerRow(
-                                    image: "PIC1",
-                                    name: "me",
-                                    country: "India",
-                                    flag: ""
-                                )
-                                
-                                RecommendedTravelerRow(
-                                    image: "PIC2",
-                                    name: "MANISH",
-                                    country: "India",
-                                    flag: ""
-                                )
-                                
-                                RecommendedTravelerRow(
-                                    image: "PIC3",
-                                    name: "Engulfedleader",
-                                    country: "Usa",
-                                    flag: ""
-                                )
-                                
-                                RecommendedTravelerRow(
-                                    image: "PIC4",
-                                    name: "feegoskye",
-                                    country: "Kenya",
-                                    flag: ""
-                                )
-                                
-                                RecommendedTravelerRow(
-                                    image: "PIC5",
-                                    name: "unknown",
-                                    country: "Worldwide",
-                                    flag: ""
-                                )
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 0) {
+                                ForEach(filteredChats, id: \.["name"]) { chat in
+                                    NavigationLink(
+                                        destination: ChatDetailView(chatPartner: chat["name"] ?? "")
+                                            .onAppear { isInChatDetail = true }
+                                            .onDisappear { isInChatDetail = false }
+                                    ) {
+                                        ChatRow(name: chat["name"] ?? "", 
+                                               lastMessage: chat["lastMessage"] ?? "")
+                                    }
+                                }
                             }
-                            .background(Color.gray.opacity(0.1))
-                            .cornerRadius(16)
-                            .padding(.horizontal)
                         }
                     }
-                    
-                    Spacer()
-                    
-                    // Bottom Navigation
-//                    HStack {
-//                        TabBarButton(imageName: "house", isSelected: false)
-//                        TabBarButton(imageName: "globe", isSelected: false)
-//                        AddButton()
-//                        TabBarButton(imageName: "mappin", isSelected: false)
-//                        TabBarButton(imageName: "message.fill", isSelected: true)
-//                    }
-//                    .padding()
-//                    .background(Color.gray.opacity(0.1))
-                       
                 }
             }
             .foregroundColor(.white)
@@ -134,49 +123,38 @@ struct ChatView: View {
     }
 }
 
-struct RecommendedTravelerRow: View {
-    let image: String
+struct ChatRow: View {
     let name: String
-    let country: String
-    let flag: String
+    let lastMessage: String
     
     var body: some View {
-        Button(action: {}) {
-            HStack {
-                Image(image)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .clipShape(Circle())
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(name)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.white)
-                    
-                    HStack {
-                        Text(country)
-                            .foregroundColor(.gray)
-                        Text(flag)
-                    }
-                }
-                
-                Spacer()
-                
-                Image(systemName: "chevron.right")
+        HStack(spacing: 12) {
+            // Profile Picture
+            Circle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: 50, height: 50)
+            
+            // Chat Info
+            VStack(alignment: .leading, spacing: 4) {
+                Text(name)
+                    .font(.headline)
+                    .foregroundColor(.white)
+                Text(lastMessage)
+                    .font(.subheadline)
                     .foregroundColor(.gray)
+                    .lineLimit(1)
             }
-            .padding()
+            
+            Spacer()
         }
-        .background(Color.clear)
+        .padding()
+        .background(Color.black)
     }
 }
 
-    
-
-
 struct ChatView_Previews: PreviewProvider {
     static var previews: some View {
-        ChatView()
+        ChatView(isInChatDetail: .constant(false))
             .preferredColorScheme(.dark)
     }
 }

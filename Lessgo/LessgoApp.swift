@@ -10,13 +10,21 @@ import Firebase
 
 @main
 struct LessgoApp: App {
-//    Initalize Firebase
-    init(){
+    @StateObject private var authManager = AuthenticationManager()
+    
+    init() {
         FirebaseApp.configure()
     }
+    
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if authManager.isAuthenticated {
+                MainTabView()
+                    .environmentObject(authManager)
+            } else {
+                LoginView()
+                    .environmentObject(authManager)
+            }
         }
     }
 }

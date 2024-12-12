@@ -3,6 +3,8 @@ import SwiftUI
 
 struct ReviewAndSubmitView: View {
     @ObservedObject var viewModel: ContentViewModel
+    @EnvironmentObject private var authManager: AuthenticationManager
+    @State private var isLoading = false
     var onSubmit: () -> Void
     
     var body: some View {
@@ -22,17 +24,32 @@ struct ReviewAndSubmitView: View {
             .foregroundColor(.white)
             
             // Submit button
-            Button(action: onSubmit) {
-                Text("Submit")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            Button(action: {
+                isLoading = true
+                viewModel.signUpUser { success in
+                    if success {
+                        // Login automatically after successful signup
+                        viewModel.loginUser()
+                    }
+                    isLoading = false
+                }
+            }) {
+                if isLoading {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                } else {
+                    Text("Submit")
+                }
             }
+            .disabled(isLoading)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(isLoading ? Color.gray : Color.green)
+            .foregroundColor(.white)
+            .cornerRadius(10)
         }
         .padding()
-        .background(Color.black.edgesIgnoringSafeArea(.all)) // Optional background styling
+        .background(Color.black.edgesIgnoringSafeArea(.all))
     }
     
     private var dateFormatter: DateFormatter {

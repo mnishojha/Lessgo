@@ -10,6 +10,8 @@ import SwiftUI
 
 
 class ContentViewModel: ObservableObject {
+    @Published var isAuthenticated = false
+    
     // Basic fields
     @Published var photos: [UIImage?] = [nil, nil, nil] // Initialize with empty placeholders
     @Published var email = ""
@@ -29,38 +31,63 @@ class ContentViewModel: ObservableObject {
     @Published var topPick = ""
     
     func loginUser() {
-        // Your login logic here
+        Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.errorMessage = error.localizedDescription
+                return
+            }
+            
+            // Clear sensitive data after successful login
+            DispatchQueue.main.async {
+                self.password = ""
+                self.errorMessage = ""
+            }
+        }
     }
     
-    func signUpUser() {
+    func signUpUser(completion: @escaping (Bool) -> Void = { _ in }) {
         guard !email.isEmpty, !password.isEmpty else {
             errorMessage = "Email and password are required."
+            completion(false)
             return
         }
 
-        // Create user in Firebase Auth
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
             
             if let error = error {
-                self.errorMessage = "Error: \(error.localizedDescription)"
+                DispatchQueue.main.async {
+                    self.errorMessage = "Error: \(error.localizedDescription)"
+                    completion(false)
+                }
                 return
             }
 
             guard let userId = authResult?.user.uid else {
-                self.errorMessage = "Unable to retrieve user ID."
+                DispatchQueue.main.async {
+                    self.errorMessage = "Unable to retrieve user ID."
+                    completion(false)
+                }
                 return
             }
 
-            // Save data to Firestore
-            self.saveUserProfileData(userId: userId)
+            self.saveUserProfileData(userId: userId) { success in
+                if success {
+                    // Auto login after successful signup
+                    self.loginUser()
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            }
         }
     }
 
-    private func saveUserProfileData(userId: String) {
+    private func saveUserProfileData(userId: String, completion: @escaping (Bool) -> Void) {
         let db = Firestore.firestore()
 
-        // Gather all data
         let userData: [String: Any] = [
             "email": email,
             "dateOfBirth": dateOfBirth,
@@ -73,12 +100,13 @@ class ContentViewModel: ObservableObject {
             "photos": photos.compactMap { $0?.jpegData(compressionQuality: 0.8)?.base64EncodedString() }
         ]
 
-        // Save to Firestore
         db.collection("users").document(userId).setData(userData) { error in
             if let error = error {
                 self.errorMessage = "Failed to save profile: \(error.localizedDescription)"
+                completion(false)
             } else {
                 self.errorMessage = "Profile saved successfully!"
+                completion(true)
             }
         }
     }

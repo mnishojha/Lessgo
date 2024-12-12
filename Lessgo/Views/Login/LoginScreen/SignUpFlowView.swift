@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SignUpFlowView: View {
     @ObservedObject var viewModel: ContentViewModel // Shared ViewModel
-    @State private var currentStep = 1 // Tracks the current step of the flow
+    @State private var currentStep = 1 // Back to starting at step 1
     
     var body: some View {
         VStack {

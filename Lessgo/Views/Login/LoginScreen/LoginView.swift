@@ -4,6 +4,7 @@ import Firebase
 
 struct LoginView: View {
     @StateObject private var viewModel = ContentViewModel()
+    @EnvironmentObject private var authManager: AuthenticationManager
     @State private var isEmailFocused = false
     @State private var isPasswordFocused = false
     
@@ -27,6 +28,22 @@ struct LoginView: View {
                     loginButton
                     signUpButton // Ensure this is the NavigationLink we’ll use for SignUpFlowView
                     forgotPasswordButton
+                    
+                    // Test Login Button - TO BE REMOVED
+                    Button(action: {
+                        // Directly set authentication state to true
+                        authManager.isAuthenticated = true
+                    }) {
+                        Text("Test Login")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red.opacity(0.7))
+                            .cornerRadius(10)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 20)
                 }
             }
         }
