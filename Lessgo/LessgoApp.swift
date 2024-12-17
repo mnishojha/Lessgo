@@ -16,7 +16,7 @@ struct LessgoApp: App {
         // Add error handling for Firebase configuration
         do {
             if FirebaseApp.app() == nil {
-                if let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") {
+                if Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist") != nil {
                     FirebaseApp.configure()
                 } else {
                     print("Error: Firebase configuration file not found")
