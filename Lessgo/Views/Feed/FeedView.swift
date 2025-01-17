@@ -12,7 +12,7 @@ struct FeedView: View {
                 ScrollView {
                     VStack(spacing: 20) {
                         searchBar
-                        sectionHeader("Popular Destinations", actionText: "See all")
+                        sectionHeader("Upload  Here",       actionText: "See all")
                         destinationList
                         roadTripPost
                     }

@@ -63,9 +63,7 @@ struct TripDetailView: View {
                 
                 // Date and Travelers Info
                 HStack(spacing: 16) {
-                    Label("nov 4, 2024 - nov 9, 2024", systemImage: "calendar")
-                        .foregroundColor(.gray)
-                    
+                   
                     Label("12 travelers  >", systemImage: "person.2.fill")
                         .foregroundColor(.gray)
                 }
@@ -94,17 +92,21 @@ struct TripDetailView: View {
                 
                 // About Trip Section with Rounded Background
                 DisclosureGroup(isExpanded: $showAboutTrip) {
-                    Text("Hi guys! this is my first project using swift ui , hope you like this app and enjoy it. thanks you")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.black.opacity(0.8))
-                        .cornerRadius(10)
-                        .padding(.horizontal, 4)
+                    
                 } label: {
+                    VStack{
                     Text("About Trip")
                         .font(.headline)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
+                    Label("nov 4, 2024 - nov 9, 2024", systemImage: "calendar")
+                        .foregroundColor(.gray)
+                        .font(.caption)
+                        .padding()
+                        Text("Hi guys! this is my first project using swift ui , hope you like this app and enjoy it. thanks you")
+                            .foregroundColor(.white)
+                    }
+                      
                 }
                 .padding(.top, 16)
             }
