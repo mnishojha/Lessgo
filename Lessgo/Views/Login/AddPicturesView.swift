@@ -1,23 +1,24 @@
 import SwiftUI
+import UIKit // ✅ Fix: Import UIKit for UIImage
 
 struct AddPicturesView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var showImagePicker = false
     @State private var selectedImageIndex: Int?
-    
+
     var onNext: () -> Void
-    
+
     var body: some View {
         VStack(spacing: 32) {
             // Title
             Text("Add pictures of yourself")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.white)
-            
+
             // Photos Grid
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                ForEach(0..<viewModel.photos.count, id: \.self) { index in
-                    if let image = viewModel.photos[index] {
+                ForEach(viewModel.photos.indices, id: \.self) { index in // ✅ Fix: Corrected ForEach binding
+                    if let image = viewModel.photos[index] { // ✅ Fix: No $
                         ZStack(alignment: .topTrailing) {
                             Image(uiImage: image)
                                 .resizable()
@@ -25,7 +26,7 @@ struct AddPicturesView: View {
                                 .frame(width: 150, height: 100)
                                 .cornerRadius(10)
                                 .clipped()
-                            
+
                             // Remove button
                             Button(action: {
                                 viewModel.photos[index] = nil
@@ -46,7 +47,7 @@ struct AddPicturesView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(Color.gray.opacity(0.2))
                                     .frame(width: 150, height: 100)
-                                
+
                                 Image(systemName: "plus")
                                     .font(.system(size: 24, weight: .bold))
                                     .foregroundColor(.blue)
@@ -56,9 +57,9 @@ struct AddPicturesView: View {
                 }
             }
             .padding(.horizontal, 24)
-            
+
             Spacer()
-            
+
             // Continue Button
             Button(action: {
                 onNext()
@@ -76,7 +77,11 @@ struct AddPicturesView: View {
         .padding(.top, 20)
         .background(Color.black.edgesIgnoringSafeArea(.all))
         .sheet(isPresented: $showImagePicker) {
-            ImagePicker(selectedImage: $viewModel.photos[selectedImageIndex ?? 0])
+            if let index = selectedImageIndex {
+                ImagePicker(selectedImage: $viewModel.photos[index]) // ✅ Fix: Corrected image picker binding
+            } else {
+                ImagePicker(selectedImage: .constant(nil)) // ✅ Fix: Prevents crash when index is nil
+            }
         }
     }
 }
@@ -84,28 +89,28 @@ struct AddPicturesView: View {
 // ImagePicker View for selecting images
 struct ImagePicker: UIViewControllerRepresentable {
     @Binding var selectedImage: UIImage?
-    
+
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.delegate = context.coordinator
         picker.sourceType = .photoLibrary
         return picker
     }
-    
+
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
-    
+
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-    
+
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         let parent: ImagePicker
-        
+
         init(_ parent: ImagePicker) {
             self.parent = parent
         }
-        
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
             if let image = info[.originalImage] as? UIImage {
                 parent.selectedImage = image
             }

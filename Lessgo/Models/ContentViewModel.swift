@@ -8,12 +8,11 @@ import FirebaseAuth
 import Firebase
 import SwiftUI
 
-
 class ContentViewModel: ObservableObject {
     @Published var isAuthenticated = false
     
     // Basic fields
-    @Published var photos: [UIImage?] = [nil, nil, nil] // Initialize with empty placeholders
+    @Published var photos: [UIImage?] = [nil, nil, nil] // Initialize with empty placeholdersscope
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage = ""
