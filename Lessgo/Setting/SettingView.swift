@@ -1,8 +1,8 @@
 //
-//  SettingView.swift
+//  SettingsView.swift
 //  Lessgo
 //
-//  Created by manish ojha on 17/12/24.
+//  Created by Manish Ojha on 17/12/24.
 //
 
 import SwiftUI
@@ -16,81 +16,60 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             Form {
-            
-                Section(header: Text("Account")) {
+                // Account Section
+                Section(header: Text("Account").textCase(nil)) {
                     NavigationLink(destination: Text("Profile Details")) {
-                        HStack {
-                            Image(systemName: "person.circle")
-                                .foregroundColor(.blue)
-                            Text("Profile")
-                        }
+                        Label("Profile", systemImage: "person.circle")
+                            .foregroundColor(.blue)
                     }
                     
                     NavigationLink(destination: Text("Change Password")) {
-                        HStack {
-                            Image(systemName: "key.fill")
-                                .foregroundColor(.orange)
-                            Text("Change Password")
-                        }
+                        Label("Change Password", systemImage: "key.fill")
+                            .foregroundColor(.orange)
                     }
                 }
                 
-    
-                Section(header: Text("Preferences")) {
+                // Preferences Section
+                Section(header: Text("Preferences").textCase(nil)) {
                     Toggle(isOn: $notificationsEnabled) {
-                        HStack {
-                            Image(systemName: "bell.fill")
-                                .foregroundColor(.green)
-                            Text("Notifications")
-                        }
+                        Label("Notifications", systemImage: "bell.fill")
+                            .foregroundColor(.green)
                     }
                     
-                    Picker(selection: $selectedLanguage, label: Text("Language")) {
+                    Picker("Language", selection: $selectedLanguage) {
                         ForEach(languages, id: \.self) { language in
                             Text(language)
                         }
                     }
                 }
                 
-          
-                Section(header: Text("About")) {
+                // About Section
+                Section(header: Text("About").textCase(nil)) {
                     NavigationLink(destination: Text("Version 1.0.0")) {
-                        HStack {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(.blue)
-                            Text("App Version")
-                        }
+                        Label("App Version", systemImage: "info.circle.fill")
+                            .foregroundColor(.blue)
                     }
                     
                     NavigationLink(destination: Text("Lessgo is a travel app that connects you with like-minded travel companions. Happy travels!")) {
-                        HStack {
-                            Image(systemName: "star.fill")
-                                .foregroundColor(.yellow)
-                            Text("About Lessgo")
-                        }
+                        Label("About Lessgo", systemImage: "star.fill")
+                            .foregroundColor(.yellow)
                     }
                 }
                 
-              
-                Section(header: Text("Support")) {
+                // Support Section
+                Section(header: Text("Support").textCase(nil)) {
                     NavigationLink(destination: Text("FAQs")) {
-                        HStack {
-                            Image(systemName: "questionmark.circle.fill")
-                                .foregroundColor(.gray)
-                            Text("FAQs")
-                        }
+                        Label("FAQs", systemImage: "questionmark.circle.fill")
+                            .foregroundColor(.gray)
                     }
                     
                     NavigationLink(destination: Text("Contact Us")) {
-                        HStack {
-                            Image(systemName: "envelope.fill")
-                                .foregroundColor(.red)
-                            Text("Contact Us")
-                        }
+                        Label("Contact Us", systemImage: "envelope.fill")
+                            .foregroundColor(.red)
                     }
                 }
                 
-             
+                // Log Out Button
                 Section {
                     Button(action: {
                         print("Logged out")
@@ -101,16 +80,16 @@ struct SettingsView: View {
                             Text("Log Out")
                                 .foregroundColor(.red)
                         }
+                        .frame(maxWidth: .infinity, alignment: .center)
                     }
                 }
             }
-            .navigationBarTitle("Settings", displayMode: .inline)
-            .preferredColorScheme(.dark) // Force Dark Mode
+           
         }
     }
 }
 
-
+// Preview
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView().preferredColorScheme(.dark)

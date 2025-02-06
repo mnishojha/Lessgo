@@ -7,7 +7,7 @@ struct FeedView: View {
       
         NavigationView {
             ZStack {
-                Color(.systemBackground).edgesIgnoringSafeArea(.all)
+                Color(.black).edgesIgnoringSafeArea(.all)
                 
                 ScrollView {
                     VStack(spacing: 20) {
@@ -20,7 +20,7 @@ struct FeedView: View {
                 }
             }
             .navigationTitle("Feed")
-            .navigationBarItems(trailing: addPostButton)
+           
         }
     }
     

@@ -78,7 +78,7 @@ struct MessageView: View {
             }
         }
         .navigationTitle(chatPartner)
-        .navigationBarTitleDisplayMode(.inline)
+      
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {

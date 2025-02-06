@@ -2,17 +2,17 @@
 //  ContentViewModel.swift
 //  Lessgo
 //
+//  Created by manish ojha on 06/02/25.
 //
 
+import Foundation
 import FirebaseAuth
 import Firebase
 import SwiftUI
 
 class ContentViewModel: ObservableObject {
     @Published var isAuthenticated = false
-    
-    // Basic fields
-    @Published var photos: [UIImage?] = [nil, nil, nil] // Initialize with empty placeholdersscope
+    @Published var photos: [Data?] = [nil, nil, nil]
     @Published var email = ""
     @Published var password = ""
     @Published var errorMessage = ""
@@ -20,15 +20,13 @@ class ContentViewModel: ObservableObject {
     @Published var isSignUpButtonPressed = false
     @Published var showPassword = false
     @Published var languages: [String] = []
-    
-    // Additional information fields
     @Published var dateOfBirth = Date()
     @Published var location = ""
     @Published var interests = [String]()
     @Published var language = ""
     @Published var upcomingTrip = ""
     @Published var topPick = ""
-    
+
     func loginUser() {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             guard let self = self else { return }
@@ -38,7 +36,6 @@ class ContentViewModel: ObservableObject {
                 return
             }
             
-            // Clear sensitive data after successful login
             DispatchQueue.main.async {
                 self.password = ""
                 self.errorMessage = ""
@@ -74,7 +71,6 @@ class ContentViewModel: ObservableObject {
 
             self.saveUserProfileData(userId: userId) { success in
                 if success {
-                    // Auto login after successful signup
                     self.loginUser()
                     completion(true)
                 } else {
@@ -96,7 +92,7 @@ class ContentViewModel: ObservableObject {
             "upcomingTrip": upcomingTrip,
             "topPick": topPick,
             "languages": languages,
-            "photos": photos.compactMap { $0?.jpegData(compressionQuality: 0.8)?.base64EncodedString() }
+            "photos": photos.compactMap { $0?.base64EncodedString() }
         ]
 
         db.collection("users").document(userId).setData(userData) { error in

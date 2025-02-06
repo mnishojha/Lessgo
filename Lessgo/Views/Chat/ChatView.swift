@@ -62,7 +62,7 @@ struct ChatView: View {
                             .foregroundColor(.white)
                             .font(.system(size: 16))
                             .accentColor(.blue)
-                            .autocapitalization(.none)
+                           
                             .placeholder(when: searchText.isEmpty) {
                                 Text("Search chats")
                                     .foregroundColor(.gray)
