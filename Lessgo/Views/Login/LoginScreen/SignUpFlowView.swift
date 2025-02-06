@@ -87,7 +87,7 @@ struct SignUpFlowView: View {
     }
     
     private func submitSignup() {
-        viewModel.signUpUser() // Save data to Firebase
+        $viewModel.signUpUser // Save data to Firebase
     }
 }
 

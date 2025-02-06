@@ -7,42 +7,26 @@ struct LoginView: View {
     @EnvironmentObject private var authManager: AuthenticationManager
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack(spacing: 0) {
                 // Header Image Section
-                ZStack {
-                    GeometryReader { geometry in
-                        Image("Shimla")
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geometry.size.width, height: geometry.size.height + 50)
-                            .clipShape(
-                                RoundedCornersShape(
-                                    corners: [.bottomLeft, .bottomRight],
-                                    radius: 40
-                                )
-                            )
-                            .edgesIgnoringSafeArea(.top)
-                    }
+                Image("Shimla")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
                     .frame(height: 380)
-
-                    // Logo and text overlay
-                    VStack(spacing: 16) {
-                        Spacer()
-                        Text("Lesgo")
-                            .font(.system(size: 40, weight: .bold))
-                            .foregroundColor(.white)
-                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
-
-                        Text("Sign In")
-                            .font(.system(size: 28, weight: .semibold))
-                            .foregroundColor(.white)
-                            .shadow(color: Color.black.opacity(0.3), radius: 5, x: 0, y: 2)
-                        
-                        Spacer()
-                    }
-                    .padding(.bottom, 30)
+                    .clipShape(RoundedRectangle(cornerRadius: 40))
+                    .edgesIgnoringSafeArea(.top)
+                
+                // Title
+                VStack(spacing: 8) {
+                    Text("Lesgo")
+                        .font(.largeTitle.bold())
+                        .foregroundColor(.white)
+                    Text("Sign In")
+                        .font(.title2)
+                        .foregroundColor(.white)
                 }
+                .padding(.bottom, 20)
                 
                 // Error Message
                 if !viewModel.errorMessage.isEmpty {
@@ -53,34 +37,15 @@ struct LoginView: View {
                 
                 // Sign In Buttons
                 VStack(spacing: 20) {
-                    // Google Sign In Button
-                    SignInButton(
-                        customIcon: "google",
-                        text: "Sign In with Google",
-                        textColor: .black,
-                        backgroundColor: Color(.systemGray6)
-                    ) {
-                        // Add Google sign in logic
-                    }
-
-                    // Apple Sign In Button
-                    SignInButton(
-                        icon: "apple.logo",
-                        text: "Sign In with Apple ID",
-                        textColor: .black,
-                        backgroundColor: Color(.systemGray6)
-                    ) {
-                        // Add Apple sign in logic
+                    SignInButton(icon: "globe", text: "Sign In with Google", textColor: .black, backgroundColor: .gray.opacity(0.2)) {
+                        // Add Google sign-in logic
                     }
                     
-                    // Test Login Button
-                    SignInButton(
-                        icon: "bolt.fill",
-                        text: "Test Login",
-                        textColor: .white,
-                        backgroundColor: .red.opacity(0.7)
-                    ) {
-                        // Direct authentication for testing
+                    SignInButton(icon: "apple.logo", text: "Sign In with Apple ID", textColor: .black, backgroundColor: .gray.opacity(0.2)) {
+                        // Add Apple sign-in logic
+                    }
+                    
+                    SignInButton(icon: "bolt.fill", text: "Test Login", textColor: .white, backgroundColor: .red.opacity(0.7)) {
                         authManager.isAuthenticated = true
                     }
                 }
@@ -88,8 +53,14 @@ struct LoginView: View {
                 .padding(.top, 40)
                 
                 // Forgot Password Button
-                forgotPasswordButton
-                    .padding(.top, 20)
+                Button(action: {
+                    // Forgot password logic
+                }) {
+                    Text("Forgot Password?")
+                        .foregroundColor(.gray)
+                        .underline()
+                }
+                .padding(.top, 20)
                 
                 Spacer()
                 
@@ -105,74 +76,25 @@ struct LoginView: View {
                 }
                 .padding(.bottom, 32)
             }
-            .background(Color(.systemBackground))
-        }
-    }
-    
-    var forgotPasswordButton: some View {
-        Button(action: {
-            // Add your forgot password logic here
-        }) {
-            Text("Forgot Password?")
-                .foregroundColor(.gray)
-                .underline()
+           
         }
     }
 }
 
-// Custom Shape for rounded corners
-struct RoundedCornersShape: Shape {
-    let corners: UIRectCorner
-    let radius: CGFloat
-    
-    func path(in rect: CGRect) -> Path {
-        let path = UIBezierPath(
-            roundedRect: rect,
-            byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
-        )
-        return Path(path.cgPath)
-    }
-}
-
-// SignInButton Component
+// Sign In Button Component
 struct SignInButton: View {
-    let icon: String?
-    let customIcon: String?
+    let icon: String
     let text: String
     let textColor: Color
     let backgroundColor: Color
     let action: () -> Void
     
-    init(
-        icon: String? = nil,
-        customIcon: String? = nil,
-        text: String,
-        textColor: Color,
-        backgroundColor: Color,
-        action: @escaping () -> Void
-    ) {
-        self.icon = icon
-        self.customIcon = customIcon
-        self.text = text
-        self.textColor = textColor
-        self.backgroundColor = backgroundColor
-        self.action = action
-    }
-    
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
-                if let systemIcon = icon {
-                    Image(systemName: systemIcon)
-                        .foregroundColor(textColor)
-                        .font(.system(size: 20))
-                } else if let custom = customIcon {
-                    Image(custom)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 24, height: 24)
-                }
+                Image(systemName: icon)
+                    .foregroundColor(textColor)
+                    .font(.system(size: 20))
                 
                 Text(text)
                     .font(.system(size: 16, weight: .semibold))
@@ -181,7 +103,7 @@ struct SignInButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: 56)
             .background(backgroundColor)
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .shadow(color: Color.black.opacity(0.05), radius: 10, x: 0, y: 5)
         }
     }
@@ -190,5 +112,6 @@ struct SignInButton: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView()
+            .environmentObject(AuthenticationManager())
     }
 }
