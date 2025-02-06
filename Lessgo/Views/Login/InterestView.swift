@@ -30,7 +30,7 @@ struct InterestView: View {
             .padding()
             
             Button(action: {
-                viewModel.interests = Array(selectedInterests) // Pass selected interests to view model
+                $viewModel.interests = Array(selectedInterests) // Pass selected interests to view model
                 onNext()
             }) {
                 Text("Continue")

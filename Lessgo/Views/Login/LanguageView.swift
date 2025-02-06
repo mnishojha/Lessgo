@@ -89,7 +89,7 @@ struct LanguageSelectionView: View {
             
             // Continue button
             Button(action: {
-                viewModel.languages = Array(selectedLanguages) // Save languages to view model
+                $viewModel.languages = Array(selectedLanguages) // Save languages to view model
                 onNext()
             }) {
                 Text("Continue")

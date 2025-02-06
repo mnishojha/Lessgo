@@ -15,7 +15,7 @@ struct ReviewAndSubmitView: View {
             
             // Display all fields
             VStack(alignment: .leading, spacing: 10) {
-                Text("Email: \(viewModel.email)")
+                Text("Email: \($viewModel.email)")
                 Text("Date of Birth: \(viewModel.dateOfBirth, formatter: dateFormatter)")
                 Text("Location: \(viewModel.location)")
                 Text("Interests: \(viewModel.interests.joined(separator: ", "))")

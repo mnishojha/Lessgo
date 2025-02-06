@@ -54,7 +54,7 @@ struct CountrySelectionView: View {
             
             // Continue Button
             Button(action: {
-                viewModel.location = selectedCountry
+                $viewModel.location = selectedCountry
                 onNext()
             }) {
                 Text("Continue")
