@@ -1,24 +1,16 @@
-//
-//  DateOfBirthView.swift
-//  Lessgo
-//
-//  Created by Manish Ojha on 02/11/24.
-//
-
 import SwiftUI
 
-// ContentViewModel to store user input
 class ContentViewModel: ObservableObject {
-    @Published var dateOfBirth: Date? = nil
+    @Published var dateOfBirth: Date?
     @Published var errorMessage: String = ""
 }
 
 struct DateOfBirthView: View {
     @ObservedObject var viewModel: ContentViewModel
-    @State private var month = ""
-    @State private var day = ""
-    @State private var year = ""
-
+    @State private var month: String = ""
+    @State private var day: String = ""
+    @State private var year: String = ""
+    
     var onNext: () -> Void
 
     var body: some View {
@@ -30,49 +22,18 @@ struct DateOfBirthView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
 
-            // Input Fields for Month, Day, Year
+            // Input Fields
             HStack(spacing: 16) {
-                TextField("MM", text: $month)
-                    .keyboardType(.numberPad)
-                    .textFieldStyle(PlainTextFieldStyle()) // Proper styling
-                    .frame(width: 80, height: 60) // Set width
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-
-                TextField("DD", text: $day)
-                    .keyboardType(.numberPad)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .frame(width: 80, height: 60)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
-
-                TextField("YYYY", text: $year)
-                    .keyboardType(.numberPad)
-                    .textFieldStyle(PlainTextFieldStyle())
-                    .frame(width: 100, height: 60)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.white)
-                    .background(Color.gray.opacity(0.2))
-                    .cornerRadius(10)
+                CustomTextField(placeholder: "MM", text: $month, maxLength: 2)
+                CustomTextField(placeholder: "DD", text: $day, maxLength: 2)
+                CustomTextField(placeholder: "YYYY", text: $year, maxLength: 4)
             }
             .padding(.horizontal, 24)
 
             Spacer()
 
             // Continue Button
-            Button(action: {
-                if let dateOfBirth = createDateFromInputs() {
-                    viewModel.dateOfBirth = dateOfBirth // Save valid date
-                    viewModel.errorMessage = "" // Clear error
-                    onNext() // Proceed
-                } else {
-                    viewModel.errorMessage = "Please enter a valid date."
-                }
-            }) {
+            Button(action: validateAndContinue) {
                 Text("Continue")
                     .font(.system(size: 18, weight: .bold))
                     .foregroundColor(.white)
@@ -82,6 +43,7 @@ struct DateOfBirthView: View {
                     .cornerRadius(25)
                     .padding(.horizontal, 24)
             }
+            .disabled(month.isEmpty || day.isEmpty || year.isEmpty)
 
             // Error message
             if !viewModel.errorMessage.isEmpty {
@@ -94,26 +56,64 @@ struct DateOfBirthView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
-    // Helper function to validate and create a Date from inputs
+    // Helper function to validate and proceed
+    private func validateAndContinue() {
+        guard let dateOfBirth = createDateFromInputs() else {
+            viewModel.errorMessage = "Please enter a valid date."
+            return
+        }
+
+        let age = calculateAge(from: dateOfBirth)
+        if age < 18 {
+            viewModel.errorMessage = "You must be at least 18 years old."
+        } else {
+            viewModel.dateOfBirth = dateOfBirth
+            viewModel.errorMessage = ""
+            onNext()
+        }
+    }
+
+    // Create a valid date from inputs
     private func createDateFromInputs() -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-        let dateString = "\(month)/\(day)/\(year)"
 
-        if let date = formatter.date(from: dateString) {
-            return date
-        } else {
-            return nil // Return nil if date is invalid
-        }
+        let dateString = "\(month)/\(day)/\(year)"
+        return formatter.date(from: dateString)
     }
+
+    // Calculate age from birth date
+    private func calculateAge(from birthDate: Date) -> Int {
+        let calendar = Calendar.current
+        let now = Date()
+        let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
+        return ageComponents.year ?? 0
+    }
+}
+
+
+struct CustomTextField: View {
+    let placeholder: String
+    @Binding var text: String
+    let maxLength: Int
+
+    var body: some View {
+        TextField(placeholder, text: $text)
+           
+           
+            .background(Color.gray.opacity(0.2))
+            .cornerRadius(10)
+            .onChange(of: text) { oldValue, newValue in
+                text = newValue.filter { $0.isNumber }.prefix(maxLength).description
+            }
+    }
+
+    
 }
 
 struct DateOfBirthView_Previews: PreviewProvider {
     static var previews: some View {
-        DateOfBirthView(viewModel: ContentViewModel()) {
-            // Sample onNext action
-        }
-        .preferredColorScheme(.dark)
+        DateOfBirthView(viewModel: ContentViewModel()) { }
+            .preferredColorScheme(.dark)
     }
 }
-   

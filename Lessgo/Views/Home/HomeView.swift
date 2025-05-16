@@ -1,4 +1,4 @@
-import SwiftUI
+import  SwiftUI
 
 struct TravelHomeView: View {
     @State private var searchText = ""
@@ -6,8 +6,8 @@ struct TravelHomeView: View {
     
     // Sample data for trending plans
     let trendingPlans = [
-        TrendingPlan(title: "Boys trip", image: "miami", country: "USA", participants: 50),
-        TrendingPlan(title: "Florida trippp!!!", image: "florida", country: "USA", participants: 50)
+        TrendingPlan(title: "Boys trip", image: "miami", country: "USA", participants: ["Max", "Luffy", "Zoro"]),
+        TrendingPlan(title: "Florida trippp!!!", image: "florida", country: "USA", participants: ["Nami", "Sanji", "Usopp"])
     ]
     
     var filteredPlans: [TrendingPlan] {
@@ -37,7 +37,6 @@ struct TravelHomeView: View {
                             }
                             Spacer()
                             
-                            // Profile Image with Navigation
                             NavigationLink(destination: ProfileView(), isActive: $navigateToProfile) {
                                 Image("Profile")
                                     .resizable()
@@ -56,14 +55,12 @@ struct TravelHomeView: View {
                                 .foregroundColor(.white)
                                 .textFieldStyle(PlainTextFieldStyle())
                             
-                            // Add Profile Image
                             Image("profile")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 30, height: 30)
                                 .clipShape(Circle())
                             
-                            // Add Luffy Image
                             Image("luffy")
                                 .resizable()
                                 .scaledToFit()
@@ -117,13 +114,13 @@ struct TravelHomeView: View {
                         }
                         .padding(.horizontal)
 
-                        // Note for Discover Countries
+                        // Discover note
                         VStack(alignment: .leading, spacing: 16) {
                             Text("House Parties/Fest")
                                 .font(.title2)
                                 .fontWeight(.bold)
 
-                            Text("We're still working on this feature! If you have any suggestions or ideas for new features, please let us know.")
+                            Text("We're still working on this feature! If you have any suggestions or ideas for new features, please let us know.......")
                                 .foregroundColor(.gray)
                                 .padding()
                                 .background(Color.blue.opacity(0.1))
@@ -142,7 +139,9 @@ struct TravelHomeView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 15) {
                 ForEach(filteredPlans) { plan in
-                    destinationCard(imageName: plan.image, cityName: plan.title)
+                    NavigationLink(destination: TripsDetailView()) {
+                        destinationCard(imageName: plan.image, cityName: plan.title)
+                    }
                 }
             }
         }
@@ -169,18 +168,15 @@ struct TravelHomeView: View {
     }
 }
 
-// Existing supporting structures remain the same
+// MARK: - Supporting Views and Models
+
 struct TrendingPlan: Identifiable {
     let id = UUID()
     let title: String
     let image: String
     let country: String
-    let participants: Int
+    let participants: [String]
 }
-let trendingPlans = [
-    TrendingPlan(title: "Boys trip", image: "Miami", country: "USA", participants: 50),
-    TrendingPlan(title: "Florida trippp!!!", image: "Arizona", country: "Greece", participants: 50)
-    ]
 
 struct NoPlansView: View {
     var body: some View {
@@ -204,24 +200,42 @@ struct NoPlansView: View {
     }
 }
 
-struct TabButton: View {
-    let imageName: String
-    var isSelected: Bool = false
-    var action: () -> Void = {}
-    
+struct ProfilesView: View {
     var body: some View {
-        Button(action: action) {
-            Image(systemName: imageName)
-                .font(.system(size: 22))
-                .foregroundColor(isSelected ? .blue : .gray)
-                .frame(maxWidth: .infinity)
-        }
+        Text("Profile View")
+            .foregroundColor(.white)
+            .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 }
 
+struct GroupsChatView: View {
+    let chatParticipants: [String]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Group Chat")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+            
+            Text("Participants:")
+                .font(.headline)
+                .foregroundColor(.gray)
+            
+            ForEach(chatParticipants, id: \.self) { name in
+                Text("• \(name)")
+                    .foregroundColor(.white)
+            }
+            
+            Spacer()
+        }
+        .padding()
+        .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
 struct TravelHomeView_Previews: PreviewProvider {
     static var previews: some View {
         TravelHomeView()
+            .preferredColorScheme(.dark)
     }
 }
-

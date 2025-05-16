@@ -3,6 +3,7 @@ import SwiftUI
 struct InterestView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var selectedInterests: Set<String> = []
+    
     private let interests = [
         "Adventure", "Au Pair", "Backpacking", "Beach",
         "Budget Travel", "Camping", "Cruise", "Digital Nomad",
@@ -16,9 +17,10 @@ struct InterestView: View {
     var body: some View {
         VStack {
             Text("Select up to 5 interests")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .foregroundColor(.white)
+                .padding(.bottom, 10)
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 15)], spacing: 15) {
                 ForEach(interests, id: \.self) { interest in
@@ -29,19 +31,30 @@ struct InterestView: View {
             }
             .padding()
             
+            Spacer()
+            
+            // ✅ New Button
             Button(action: {
-                $viewModel.interests = Array(selectedInterests) // Pass selected interests to view model
-                onNext()
+                onNext() // ✅ Go to next step without modifying viewModel here
             }) {
-                Text("Continue")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(selectedInterests.isEmpty ? Color.gray : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                HStack {
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(.title3)
+                    
+                    Text("Next Step")
+                        .font(.headline)
+                        .bold()
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(selectedInterests.count > 0 ? Color.blue : Color.gray.opacity(0.5))
+                .clipShape(Capsule())
+                .shadow(radius: 5)
+                .padding(.horizontal, 24)
+                .animation(.easeInOut, value: selectedInterests.count)
             }
-            .padding()
-            .disabled(selectedInterests.isEmpty) // Disable if no interest selected
+            .disabled(selectedInterests.isEmpty) // ✅ Disable when no interests selected
         }
         .padding()
         .background(Color.black.edgesIgnoringSafeArea(.all))
@@ -70,6 +83,7 @@ struct InterestButton: View {
                 .frame(maxWidth: .infinity)
                 .background(isSelected ? Color.blue : Color.gray.opacity(0.2))
                 .cornerRadius(10)
+                .animation(.easeInOut, value: isSelected)
         }
     }
 }

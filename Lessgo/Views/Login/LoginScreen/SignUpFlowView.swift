@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SignUpFlowView: View {
     @ObservedObject var viewModel: ContentViewModel // Shared ViewModel
-    @State private var currentStep = 1 // Back to starting at step 1
+    @State private var currentStep = 1 // Start at step 1
     
     var body: some View {
         VStack {
@@ -19,10 +19,8 @@ struct SignUpFlowView: View {
                     CountrySelectionView(viewModel: viewModel) {
                         goToNextStep()
                     }
-                case 3:
-                    AddPicturesView(viewModel: viewModel) {
-                        goToNextStep()
-                    }
+                
+                 
                 case 4:
                     InterestView(viewModel: viewModel) {
                         goToNextStep()
@@ -31,10 +29,9 @@ struct SignUpFlowView: View {
                     LanguageSelectionView(viewModel: viewModel) {
                         goToNextStep()
                     }
-                case 6:
-                    ReviewAndSubmitView(viewModel: viewModel) {
-                        submitSignup()
-                    }
+               
+               
+                
                 default:
                     Text("Something went wrong.")
                 }
@@ -87,7 +84,7 @@ struct SignUpFlowView: View {
     }
     
     private func submitSignup() {
-        $viewModel.signUpUser // Save data to Firebase
+     
     }
 }
 

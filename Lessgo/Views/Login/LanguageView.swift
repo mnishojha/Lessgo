@@ -31,9 +31,10 @@ struct LanguageSelectionView: View {
         VStack(alignment: .leading) {
             // Title
             Text("How many languages do you speak?")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .foregroundColor(.white)
+                .padding(.bottom, 10)
             
             // Selected languages display
             ScrollView(.horizontal, showsIndicators: false) {
@@ -87,20 +88,30 @@ struct LanguageSelectionView: View {
             .listStyle(PlainListStyle())
             .background(Color.black)
             
-            // Continue button
+            Spacer()
+            
+            // ✅ New Continue Button
             Button(action: {
-                $viewModel.languages = Array(selectedLanguages) // Save languages to view model
-                onNext()
+                onNext() // ✅ Go to the next step without modifying viewModel here
             }) {
-                Text("Continue")
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(selectedLanguages.isEmpty ? Color.gray : Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+                HStack {
+                    Image(systemName: "arrow.right.circle.fill")
+                        .font(.title3)
+                    
+                    Text("Next Step")
+                        .font(.headline)
+                        .bold()
+                }
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(selectedLanguages.count > 0 ? Color.blue : Color.gray.opacity(0.5))
+                .clipShape(Capsule())
+                .shadow(radius: 5)
+                .padding(.horizontal, 24)
+                .animation(.easeInOut, value: selectedLanguages.count)
             }
-            .padding()
-            .disabled(selectedLanguages.isEmpty)
+            .disabled(selectedLanguages.isEmpty) // ✅ Disable when no language is selected
         }
         .padding()
         .background(Color.black.edgesIgnoringSafeArea(.all))

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomTextField: View {
+struct CustomTextFields: View {
     @Binding var text: String
     let placeholder: String
     @Binding var isFocused: Bool

@@ -60,15 +60,15 @@ struct TripPlanningView: View {
             }
             .padding()
             .background(Color.black.edgesIgnoringSafeArea(.all))
-            .navigationBarItems(leading: Button(action: {
+         
                 // Add your back action here
-            }) {
+        };
                 Image(systemName: "arrow.left")
                     .foregroundColor(.white)
-            })
+            }
         }
-    }
-}
+    
+
 
 // Custom Destination Picker View
 struct DestinationPickerView: View {
