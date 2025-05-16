@@ -14,19 +14,21 @@ struct ProfileView: View {
                
                 Spacer()
             }
-            .padding()
-            .navigationBarItems(
-                trailing: NavigationLink(destination: SettingsView()) {
-                    Image(systemName: "gearshape.fill")
-                        .foregroundColor(.gray)
-                        .font(.system(size: 22))
+          
+             
+               
+                    NavigationLink(destination: SettingView()) {
+                        Image(systemName: "gearshape.fill")
+                            .foregroundColor(.gray)
+                            .font(.system(size: 22))
+                    }
                 }
-            )
+            }
         }
-    }
-}
+    
 
-// Your existing components remain the same
+
+// Profile Components
 struct ProfileImage: View {
     let imageName: String
     var body: some View {
@@ -83,7 +85,7 @@ struct TagsView: View {
     }
 }
 
-// Helper extension remains the same
+// Helper Extension
 extension Array {
     func chunked(into size: Int) -> [[Element]] {
         guard size > 0 else { return [] }
@@ -99,7 +101,7 @@ extension Array {
     }
 }
 
-// Updated Settings View
+// Settings View
 struct SettingView: View {
     @State private var notificationsEnabled = true
     @State private var selectedLanguage = "English"
@@ -191,7 +193,6 @@ struct SettingView: View {
                 }
             }
         }
-        .navigationBarTitle("Settings", displayMode: .inline)
         .preferredColorScheme(.dark)
         Spacer()
     }
