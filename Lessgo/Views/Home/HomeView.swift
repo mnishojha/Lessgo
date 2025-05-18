@@ -120,7 +120,7 @@ struct TravelHomeView: View {
                                 .font(.title2)
                                 .fontWeight(.bold)
 
-                            Text("We're still working on this feature! If you have any suggestions or ideas for new features, please let us know.......")
+                            Text("We're still working on this feature! If you have any suggestions or ideas for new features, please let us know.............")
                                 .foregroundColor(.gray)
                                 .padding()
                                 .background(Color.blue.opacity(0.1))
