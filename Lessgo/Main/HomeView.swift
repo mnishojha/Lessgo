@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct HomesView: View {
     @State private var searchText = ""
     var body: some View {
         ZStack {
