@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct FeedView: View {
+struct FeedsView: View {
     @State private var searchText = ""
     
     var body: some View {
@@ -118,6 +118,6 @@ private struct BackgroundStyle: ViewModifier {
 
 struct FeedView_Previews: PreviewProvider {
     static var previews: some View {
-        FeedView().preferredColorScheme(.dark)
+        FeedsView().preferredColorScheme(.dark)
     }
 }
