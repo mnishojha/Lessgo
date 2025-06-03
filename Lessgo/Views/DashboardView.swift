@@ -9,17 +9,14 @@ import SwiftUI
 struct DashboardView: View {
     var body: some View {
         TabView{
-            HomeView()
+             MainTabView()
                 .tabItem {
                     Image(systemName: "house.fill")
                     Text("Home")
+                
+           
                 }
-            ChatView()
-                .tabItem {
-                    Image(systemName: "message.fill")
-                    Text("Chat")
-                }
-            FeedView()
+            FeedsView()
                 .tabItem {
                     Image(systemName: "pencil")
                     Text("Feed")

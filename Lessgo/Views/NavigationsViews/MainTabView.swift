@@ -19,7 +19,7 @@ struct MainTabView: View {
                     }
                     .tag(0)
                 
-                FeedView()
+                FeedsView()
                     .tabItem {
                         Label("Feed", systemImage: "globe")
                     }
