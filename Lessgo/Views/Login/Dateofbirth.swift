@@ -1,18 +1,12 @@
 import SwiftUI
 
-
-class DOBViewModel: ObservableObject {
-    @Published var dateOfBirth: Date?
-    @Published var errorMessage: String = ""
-}
-
-
 struct DateOfBirthView: View {
-    @ObservedObject var viewModel: DOBViewModel
+    @ObservedObject var viewModel: ContentViewModel
     @State private var month: String = ""
     @State private var day: String = ""
     @State private var year: String = ""
-    
+    @State private var errorMessage: String = ""
+
     var onNext: () -> Void
 
     var body: some View {
@@ -23,7 +17,6 @@ struct DateOfBirthView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
 
-            // Date input fields
             HStack(spacing: 16) {
                 CustomTextField(placeholder: "MM", text: $month, maxLength: 2)
                 CustomTextField(placeholder: "DD", text: $day, maxLength: 2)
@@ -45,8 +38,8 @@ struct DateOfBirthView: View {
             }
             .disabled(month.isEmpty || day.isEmpty || year.isEmpty)
 
-            if !viewModel.errorMessage.isEmpty {
-                Text(viewModel.errorMessage)
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
                     .foregroundColor(.red)
                     .padding(.top)
             }
@@ -55,19 +48,18 @@ struct DateOfBirthView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
-   
     private func validateAndContinue() {
         guard let dob = createDateFromInputs() else {
-            viewModel.errorMessage = "Please enter a valid date."
+            errorMessage = "Please enter a valid date."
             return
         }
 
         let age = calculateAge(from: dob)
         if age < 18 {
-            viewModel.errorMessage = "You must be at least 18 years old."
+            errorMessage = "You must be at least 18 years old."
         } else {
             viewModel.dateOfBirth = dob
-            viewModel.errorMessage = ""
+            errorMessage = ""
             onNext()
         }
     }
@@ -86,7 +78,6 @@ struct DateOfBirthView: View {
     }
 }
 
-
 struct CustomTextField: View {
     let placeholder: String
     @Binding var text: String
@@ -104,10 +95,9 @@ struct CustomTextField: View {
     }
 }
 
-
 struct DateOfBirthView_Previews: PreviewProvider {
     static var previews: some View {
-        DateOfBirthView(viewModel: DOBViewModel()) {}
+        DateOfBirthView(viewModel: ContentViewModel()) {}
             .preferredColorScheme(.dark)
     }
 }

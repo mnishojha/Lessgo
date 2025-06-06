@@ -10,6 +10,8 @@ import FirebaseAuth
 import Firebase
 import SwiftUI
 
+
+
 class ContentViewModel: ObservableObject {
     @Published var isAuthenticated = false
     @Published var photos: [Data?] = [nil, nil, nil]
@@ -26,6 +28,8 @@ class ContentViewModel: ObservableObject {
     @Published var language = ""
     @Published var upcomingTrip = ""
     @Published var topPick = ""
+     
+    
 
     func loginUser() {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
