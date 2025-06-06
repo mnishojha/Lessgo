@@ -1,11 +1,13 @@
 import SwiftUI
 
+class TripPlanningViewModel: ObservableObject {
+    @Published var destination: String = ""
+    @Published var arrivalDate: Date = Date()
+    @Published var departureDate: Date = Date()
+}
+
 struct TripPlanningView: View {
-    @ObservedObject var viewModel: ContentViewModel
-    @State private var destination: String = ""
-    @State private var arrivalDate: Date = Date()
-    @State private var departureDate: Date = Date()
-    
+    @ObservedObject var viewModel: TripPlanningViewModel
     var onNext: () -> Void
     
     private let destinationsByRegion: [String: [String]] = [
@@ -16,31 +18,20 @@ struct TripPlanningView: View {
         "International": ["Paris", "London", "Tokyo", "New York", "Dubai", "Singapore"]
     ]
     
-    // Custom initializer
-    init(viewModel: ContentViewModel, onNext: @escaping () -> Void) {
-        self.viewModel = viewModel
-        self.onNext = onNext
-    }
-    
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 24) {
-                // Title
                 Text("Do you have an upcoming trip?")
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(.white)
                     .padding(.top, 16)
                 
-                // Destination section using custom picker
-                DestinationPickerView(selectedDestination: $destination, destinations: destinationsByRegion)
-                
-                // Date section with custom date pickers
-                DatePickerView(title: "Arrival Date", date: $arrivalDate)
-                DatePickerView(title: "Departure Date", date: $departureDate)
+                DestinationPickerView(selectedDestination: $viewModel.destination, destinations: destinationsByRegion)
+                DatePickerView(title: "Arrival Date", date: $viewModel.arrivalDate)
+                DatePickerView(title: "Departure Date", date: $viewModel.departureDate)
                 
                 Spacer()
                 
-                // Continue Button with custom style
                 Button(action: {
                     onNext()
                 }) {
@@ -60,15 +51,9 @@ struct TripPlanningView: View {
             }
             .padding()
             .background(Color.black.edgesIgnoringSafeArea(.all))
-         
-                // Add your back action here
-        };
-                Image(systemName: "arrow.left")
-                    .foregroundColor(.white)
-            }
         }
-    
-
+    }
+}
 
 // Custom Destination Picker View
 struct DestinationPickerView: View {
@@ -127,11 +112,11 @@ struct DatePickerView: View {
     }
 }
 
-
+// Preview
 struct TripPlanningView_Previews: PreviewProvider {
     static var previews: some View {
-        TripPlanningView(viewModel: ContentViewModel()) {
-            // Sample onNext action for preview
+        TripPlanningView(viewModel: TripPlanningViewModel()) {
+            // onNext Preview
         }
         .preferredColorScheme(.dark)
     }
