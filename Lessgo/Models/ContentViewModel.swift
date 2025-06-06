@@ -10,7 +10,7 @@ import FirebaseAuth
 import Firebase
 import SwiftUI
 
-class ContentViewModels: ObservableObject {
+class ContentViewModel: ObservableObject {
     @Published var isAuthenticated = false
     @Published var photos: [Data?] = [nil, nil, nil]
     @Published var email = ""

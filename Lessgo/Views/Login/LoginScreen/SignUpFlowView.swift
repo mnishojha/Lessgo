@@ -11,9 +11,11 @@ struct SignUpFlowView: View {
             // Show the current step's view
             Group {
                 switch currentStep {
+                    
                 case 1:
                     DateOfBirthView(viewModel: viewModel) {
                         goToNextStep()
+                        
                     }
                 case 2:
                     CountrySelectionView(viewModel: viewModel) {
