@@ -1,28 +1,22 @@
 import SwiftUI
 
-class ContentViewModel: ObservableObject {
-    @Published var dateOfBirth: Date?
-    @Published var errorMessage: String = ""
-}
-
 struct DateOfBirthView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var month: String = ""
     @State private var day: String = ""
     @State private var year: String = ""
-    
+    @State private var errorMessage: String = ""
+
     var onNext: () -> Void
 
     var body: some View {
         VStack(spacing: 32) {
-            // Title
             Text("What is your date of birth?")
                 .font(.system(size: 24, weight: .bold))
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
 
-            // Input Fields
             HStack(spacing: 16) {
                 CustomTextField(placeholder: "MM", text: $month, maxLength: 2)
                 CustomTextField(placeholder: "DD", text: $day, maxLength: 2)
@@ -32,7 +26,6 @@ struct DateOfBirthView: View {
 
             Spacer()
 
-            // Continue Button
             Button(action: validateAndContinue) {
                 Text("Continue")
                     .font(.system(size: 18, weight: .bold))
@@ -45,9 +38,8 @@ struct DateOfBirthView: View {
             }
             .disabled(month.isEmpty || day.isEmpty || year.isEmpty)
 
-            // Error message
-            if !viewModel.errorMessage.isEmpty {
-                Text(viewModel.errorMessage)
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
                     .foregroundColor(.red)
                     .padding(.top)
             }
@@ -56,41 +48,35 @@ struct DateOfBirthView: View {
         .background(Color.black.edgesIgnoringSafeArea(.all))
     }
 
-    // Helper function to validate and proceed
     private func validateAndContinue() {
-        guard let dateOfBirth = createDateFromInputs() else {
-            viewModel.errorMessage = "Please enter a valid date."
+        guard let dob = createDateFromInputs() else {
+            errorMessage = "Please enter a valid date."
             return
         }
 
-        let age = calculateAge(from: dateOfBirth)
+        let age = calculateAge(from: dob)
         if age < 18 {
-            viewModel.errorMessage = "You must be at least 18 years old."
+            errorMessage = "You must be at least 18 years old."
         } else {
-            viewModel.dateOfBirth = dateOfBirth
-            viewModel.errorMessage = ""
+            viewModel.dateOfBirth = dob
+            errorMessage = ""
             onNext()
         }
     }
 
-    // Create a valid date from inputs
     private func createDateFromInputs() -> Date? {
         let formatter = DateFormatter()
         formatter.dateFormat = "MM/dd/yyyy"
-
-        let dateString = "\(month)/\(day)/\(year)"
-        return formatter.date(from: dateString)
+        return formatter.date(from: "\(month)/\(day)/\(year)")
     }
 
-    // Calculate age from birth date
     private func calculateAge(from birthDate: Date) -> Int {
-        let calendar = Calendar.current
         let now = Date()
+        let calendar = Calendar.current
         let ageComponents = calendar.dateComponents([.year], from: birthDate, to: now)
         return ageComponents.year ?? 0
     }
 }
-
 
 struct CustomTextField: View {
     let placeholder: String
@@ -99,21 +85,19 @@ struct CustomTextField: View {
 
     var body: some View {
         TextField(placeholder, text: $text)
-           
-           
+            .keyboardType(.numberPad)
+            .padding()
             .background(Color.gray.opacity(0.2))
             .cornerRadius(10)
             .onChange(of: text) { oldValue, newValue in
-                text = newValue.filter { $0.isNumber }.prefix(maxLength).description
+                text = String(newValue.prefix(maxLength).filter(\.isNumber))
             }
     }
-
-    
 }
 
 struct DateOfBirthView_Previews: PreviewProvider {
     static var previews: some View {
-        DateOfBirthView(viewModel: ContentViewModel()) { }
+        DateOfBirthView(viewModel: ContentViewModel()) {}
             .preferredColorScheme(.dark)
     }
 }
