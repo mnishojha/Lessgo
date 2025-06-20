@@ -10,7 +10,12 @@ import SwiftUI
 struct CountrySelectionView: View {
     @ObservedObject var viewModel: ContentViewModel
     @State private var selectedCountry = "India"
-    let countries = ["Australia", "United States", "Canada", "India", "United Kingdom"]
+    let countries = [
+                     "🇦🇺 Australia",
+                     "🇺🇸 United States",
+                     "🇨🇦 Canada",
+                     "🇮🇳 India",
+                     "🇬🇧 United Kingdom"]
     
     var onNext: () -> Void
     

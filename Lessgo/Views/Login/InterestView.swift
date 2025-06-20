@@ -15,49 +15,52 @@ struct InterestView: View {
     var onNext: () -> Void
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 20) {
             Text("Select up to 5 interests")
                 .font(.title2)
-                .bold()
+                .fontWeight(.bold)
                 .foregroundColor(.white)
-                .padding(.bottom, 10)
+                .padding(.horizontal)
+                .padding(.top)
+                .accessibilityAddTraits(.isHeader)
             
-            LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 15)], spacing: 15) {
-                ForEach(interests, id: \.self) { interest in
-                    InterestButton(title: interest, isSelected: selectedInterests.contains(interest)) {
-                        toggleSelection(for: interest)
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 110), spacing: 12)], spacing: 12) {
+                    ForEach(interests, id: \.self) { interest in
+                        InterestButton(title: interest, isSelected: selectedInterests.contains(interest)) {
+                            toggleSelection(for: interest)
+                        }
                     }
                 }
+                .padding(.horizontal)
             }
-            .padding()
-            
+
             Spacer()
             
-            // ✅ New Button
             Button(action: {
-                onNext() // ✅ Go to next step without modifying viewModel here
+                viewModel.selectedInterests = Array(selectedInterests) // ✅ Sync selected items to ViewModel
+                onNext()
             }) {
                 HStack {
                     Image(systemName: "arrow.right.circle.fill")
-                        .font(.title3)
-                    
+                        .font(.title2)
                     Text("Next Step")
                         .font(.headline)
-                        .bold()
+                        .fontWeight(.bold)
                 }
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
                 .padding()
-                .background(selectedInterests.count > 0 ? Color.blue : Color.gray.opacity(0.5))
+                .frame(maxWidth: .infinity)
+                .background(selectedInterests.isEmpty ? Color.gray.opacity(0.5) : Color.blue)
                 .clipShape(Capsule())
                 .shadow(radius: 5)
-                .padding(.horizontal, 24)
-                .animation(.easeInOut, value: selectedInterests.count)
+                .padding(.horizontal)
             }
-            .disabled(selectedInterests.isEmpty) // ✅ Disable when no interests selected
+            .disabled(selectedInterests.isEmpty)
+            .padding(.bottom)
         }
-        .padding()
         .background(Color.black.edgesIgnoringSafeArea(.all))
+        .animation(.easeInOut, value: selectedInterests)
     }
     
     private func toggleSelection(for interest: String) {
@@ -79,20 +82,24 @@ struct InterestButton: View {
             Text(title)
                 .font(.subheadline)
                 .foregroundColor(isSelected ? .white : .gray)
-                .padding()
+                .padding(.vertical, 10)
+                .padding(.horizontal, 12)
                 .frame(maxWidth: .infinity)
                 .background(isSelected ? Color.blue : Color.gray.opacity(0.2))
                 .cornerRadius(10)
-                .animation(.easeInOut, value: isSelected)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(isSelected ? Color.blue : Color.clear, lineWidth: 1)
+                )
+                .animation(.easeInOut(duration: 0.2), value: isSelected)
         }
+        .accessibilityLabel("\(title), \(isSelected ? "selected" : "not selected")")
     }
 }
 
 struct InterestView_Previews: PreviewProvider {
     static var previews: some View {
-        InterestView(viewModel: ContentViewModel()) {
-            // Sample onNext action
-        }
-        .preferredColorScheme(.dark)
+        InterestView(viewModel: ContentViewModel()) {}
+            .preferredColorScheme(.dark)
     }
 }

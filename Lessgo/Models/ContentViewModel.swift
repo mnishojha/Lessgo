@@ -28,7 +28,10 @@ class ContentViewModel: ObservableObject {
     @Published var language = ""
     @Published var upcomingTrip = ""
     @Published var topPick = ""
-     
+    @Published var selectedInterests: [String] = []
+    @Published var selectedCountry: String = "India"
+    @Published var isLocationPermissionGranted = false
+
     
 
     func loginUser() {
@@ -93,10 +96,8 @@ class ContentViewModel: ObservableObject {
             "location": location,
             "interests": interests,
             "language": language,
-            "upcomingTrip": upcomingTrip,
-            "topPick": topPick,
-            "languages": languages,
-            "photos": photos.compactMap { $0?.base64EncodedString() }
+          
+         "photos": photos.compactMap { $0?.base64EncodedString() }
         ]
 
         db.collection("users").document(userId).setData(userData) { error in
