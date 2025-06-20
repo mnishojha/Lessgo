@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct SignUpFlowView: View {
-    @ObservedObject var viewModel: ContentViewModel // Shared ViewModel
+    @ObservedObject var viewModel: ContentViewModel
     @State private var currentStep = 1 // Start at step 1
-    
+
     var body: some View {
         VStack {
             Spacer()
@@ -11,39 +11,38 @@ struct SignUpFlowView: View {
             // Show the current step's view
             Group {
                 switch currentStep {
-                    
                 case 1:
                     DateOfBirthView(viewModel: viewModel) {
                         goToNextStep()
-                        
                     }
                 case 2:
                     CountrySelectionView(viewModel: viewModel) {
                         goToNextStep()
                     }
-                
-                 
-                case 4:
+                case 3:
                     InterestView(viewModel: viewModel) {
                         goToNextStep()
                     }
-                case 5:
+                case 4:
                     LanguageSelectionView(viewModel: viewModel) {
                         goToNextStep()
                     }
-               
-               
-                
+                case 5:
+                    LocationPermissionView(viewModel: viewModel) {
+                        goToNextStep()
+                    }
+              
                 default:
                     Text("Something went wrong.")
+                        .foregroundColor(.white)
                 }
             }
             .transition(.slide)
-            
+
             Spacer()
-            
+
             // Step indicator and controls
-            HStack {
+            HStack(spacing: 16) {
                 if currentStep > 1 {
                     Button(action: goToPreviousStep) {
                         Text("Back")
@@ -51,9 +50,10 @@ struct SignUpFlowView: View {
                             .frame(maxWidth: .infinity)
                             .background(Color.gray.opacity(0.2))
                             .cornerRadius(10)
+                            .foregroundColor(.white)
                     }
                 }
-                
+
                 if currentStep < 6 {
                     Button(action: goToNextStep) {
                         Text("Next")
@@ -70,28 +70,25 @@ struct SignUpFlowView: View {
         }
         .padding()
         .background(Color.black.edgesIgnoringSafeArea(.all))
-        .navigationBarBackButtonHidden(true) // Disable back navigation
+        .navigationBarBackButtonHidden(true)
     }
-    
+
     private func goToNextStep() {
         withAnimation {
             currentStep += 1
         }
     }
-    
+
     private func goToPreviousStep() {
         withAnimation {
             currentStep -= 1
         }
-    }
-    
-    private func submitSignup() {
-     
     }
 }
 
 struct SignUpFlowView_Previews: PreviewProvider {
     static var previews: some View {
         SignUpFlowView(viewModel: ContentViewModel())
+            .preferredColorScheme(.dark)
     }
 }
