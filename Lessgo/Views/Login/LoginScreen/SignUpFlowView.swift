@@ -2,36 +2,35 @@ import SwiftUI
 
 struct SignUpFlowView: View {
     @ObservedObject var viewModel: ContentViewModel
-    @State private var currentStep = 1 // Start at step 1
+    @State private var currentStep = 1
 
     var body: some View {
         VStack {
             Spacer()
-            
-            // Show the current step's view
+
             Group {
                 switch currentStep {
                 case 1:
-                    DateOfBirthView(viewModel: viewModel) {
-                        goToNextStep()
-                    }
+                    InputFieldType(viewModel: viewModel, onNext: goToNextStep)
                 case 2:
-                    CountrySelectionView(viewModel: viewModel) {
-                        goToNextStep()
-                    }
+                    DateOfBirthView(viewModel: viewModel, onNext: goToNextStep)
                 case 3:
-                    InterestView(viewModel: viewModel) {
-                        goToNextStep()
-                    }
+                    CountrySelectionView(viewModel: viewModel, onNext: goToNextStep)
                 case 4:
-                    LanguageSelectionView(viewModel: viewModel) {
-                        goToNextStep()
-                    }
+                    InterestView(viewModel: viewModel, onNext: goToNextStep)
                 case 5:
-                    LocationPermissionView(viewModel: viewModel) {
-                        goToNextStep()
+                    LanguageSelectionView(viewModel: viewModel, onNext: goToNextStep)
+                case 6:
+                    LocationPermissionView(viewModel: viewModel, onNext: goToNextStep)
+                case 7:
+                    NavigationLink(destination: LoginView()) {
+                        Text("Go to Login")
+                            .font(.headline)
+                            .foregroundColor(.blue)
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(10)
                     }
-              
                 default:
                     Text("Something went wrong.")
                         .foregroundColor(.white)
@@ -41,9 +40,8 @@ struct SignUpFlowView: View {
 
             Spacer()
 
-            // Step indicator and controls
             HStack(spacing: 16) {
-                if currentStep > 1 {
+                if currentStep > 1 && currentStep <= 6 {
                     Button(action: goToPreviousStep) {
                         Text("Back")
                             .padding()
