@@ -10,8 +10,7 @@ struct SignUpFlowView: View {
 
             Group {
                 switch currentStep {
-                case 1:
-                    InputFieldType(viewModel: viewModel, onNext: goToNextStep)
+                
                 case 2:
                     DateOfBirthView(viewModel: viewModel, onNext: goToNextStep)
                 case 3:
